@@ -13,7 +13,8 @@ services:
       - HF_HOME=/models
       - LLAMA_CACHE=/models
       - LLAMA_ARG_FLASH_ATTN=on
-      - CUDA_VISIBLE_DEVICES="0,1,2,3"
+      # - CUDA_VISIBLE_DEVICES="0,1,2,3"
+      - NVIDIA_VISIBLE_DEVICES=all
       # Optional: Set default model if needed, otherwise it auto-detects or is set via API
     
     gpus: all
