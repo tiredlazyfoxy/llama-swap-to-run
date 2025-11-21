@@ -1,6 +1,6 @@
 startPort: 10000
 healthCheckTimeout: 600
-logLevel: info
+logLevel: debug
 macros:
   SLOTS: 2
   default_args: --flash-attn --slots:${SLOTS}
