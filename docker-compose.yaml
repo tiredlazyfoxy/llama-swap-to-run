@@ -15,11 +15,15 @@ services:
       - LLAMA_ARG_FLASH_ATTN=on
       - CUDA_VISIBLE_DEVICES="0,1,2,3"
       # Optional: Set default model if needed, otherwise it auto-detects or is set via API
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: all
-              capabilities: [gpu]
+    
+    gpus: all
+
     restart: unless-stopped
+
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: all
+    #           capabilities: [gpu]
