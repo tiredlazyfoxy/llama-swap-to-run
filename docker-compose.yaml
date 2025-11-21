@@ -4,6 +4,7 @@ services:
     container_name: llama-swap
     ports:
       - "9292:8080"
+    user: "0:0"
     volumes:
       - /usr/llama-cpp:/models
       - ./config.yaml:/app/config.yaml
