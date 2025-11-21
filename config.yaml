@@ -1,5 +1,5 @@
 startPort: 10000
-healthCheckTimeout: 600
+healthCheckTimeout: 1200
 logLevel: debug
 macros:
   "llama-server": ./llama-server --port ${PORT}
