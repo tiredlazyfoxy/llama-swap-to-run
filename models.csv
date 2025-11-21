@@ -23,3 +23,5 @@ Qwen3-30B-A3B-Instruct-2507_Q5_K_M,mradermacher/Qwen3-30B-A3B-Instruct-2507-GGUF
 Qwen3-42B-A3B-Stranger-Thoughts-Deep20x-Abliterated-Uncensored_Q5_K_M,mradermacher/Qwen3-42B-A3B-Stranger-Thoughts-Deep20x-Abliterated-Uncensored-GGUF:Q5_K_M,262144,65536
 L3.1-MOE-4X8B-Dark-Reasoning-Super-Nova-RP-Hermes-R1-Uncensored-25B_Q5_K_S,DavidAU/L3.1-MOE-4X8B-Dark-Reasoning-Super-Nova-RP-Hermes-R1-Uncensored-25B-GGUF:Q5_K_S,131072,65536
 L3.1-4x8b_BlackTower_RP-V1.1-Uncensored-i1_Q4_K_M,mradermacher/L3.1-4x8b_BlackTower_RP-V1.1-Uncensored-i1-GGUF:Q4_K_M,131072,65536
+gpt-oss-20b_MXFP4_MOE,lmstudio-community/gpt-oss-20b-GGUF:MXFP4_MOE,131072,65535
+gpt-oss-120b_MXFP4_MOE,lmstudio-community/gpt-oss-120b-GGUF:MXFP4_MOE,131072,65535
