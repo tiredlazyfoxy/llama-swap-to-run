@@ -22,7 +22,7 @@ except ImportError:
 # Available placeholders: {repo} -> repo:quant string, {ctx} -> applied_ctx_size integer
 # Adjust flags here to change generated commands globally.
 # CMD_TEMPLATE = "llama-server --port ${{PORT}} -hf {repo} --ctx-size {ctx} --flash-attn --slots:${{SLOTS}}"
-CMD_TEMPLATE = "~/llama-server --port ${{PORT}} -hf {repo} --ctx-size {ctx} --flash-attn"
+CMD_TEMPLATE = "{{llama-server}} --port ${{PORT}} -hf {repo} --ctx-size {ctx} --flash-attn"
 
 ROOT = Path(__file__).parent
 CSV_PATH = ROOT / "models.csv"

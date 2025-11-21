@@ -2,80 +2,81 @@ startPort: 10000
 healthCheckTimeout: 600
 logLevel: debug
 macros:
+  "llama-server": ./llama-server --port ${PORT} --flash-attn
   SLOTS: 2
 models:
   Qwen3-30B-A3B-Thinking-2507_Q5_K_M:
-    cmd: ~/llama-server --port ${PORT} -hf mradermacher/Qwen3-30B-A3B-Thinking-2507-GGUF:Q5_K_M
-      --ctx-size 131072 --flash-attn
+    cmd: '{llama-server} --port ${PORT} -hf mradermacher/Qwen3-30B-A3B-Thinking-2507-GGUF:Q5_K_M
+      --ctx-size 131072 --flash-attn'
   Qwen3-30B-A3B-Thinking-2507-Amoral-Edition-i1_Q5_K_M:
-    cmd: ~/llama-server --port ${PORT} -hf mradermacher/Qwen3-30B-A3B-Thinking-2507-Amoral-Edition-i1-GGUF:Q5_K_M
-      --ctx-size 131072 --flash-attn
+    cmd: '{llama-server} --port ${PORT} -hf mradermacher/Qwen3-30B-A3B-Thinking-2507-Amoral-Edition-i1-GGUF:Q5_K_M
+      --ctx-size 131072 --flash-attn'
   OpenAi-GPT-oss-36B-BrainStorm20x-uncensored-i1_Q5_K_M:
-    cmd: ~/llama-server --port ${PORT} -hf mradermacher/OpenAi-GPT-oss-36B-BrainStorm20x-uncensored-i1-GGUF:Q5_K_M
-      --ctx-size 131072 --flash-attn
+    cmd: '{llama-server} --port ${PORT} -hf mradermacher/OpenAi-GPT-oss-36B-BrainStorm20x-uncensored-i1-GGUF:Q5_K_M
+      --ctx-size 131072 --flash-attn'
   Qwen3-4B-Thinking-2507_Q6_K:
-    cmd: ~/llama-server --port ${PORT} -hf prithivMLmods/Qwen3-4B-Thinking-2507-GGUF:Q6_K
-      --ctx-size 131072 --flash-attn
+    cmd: '{llama-server} --port ${PORT} -hf prithivMLmods/Qwen3-4B-Thinking-2507-GGUF:Q6_K
+      --ctx-size 131072 --flash-attn'
   Qwen_Qwen3-4B-Instruct-2507_Q6_K_L:
-    cmd: ~/llama-server --port ${PORT} -hf bartowski/Qwen_Qwen3-4B-Instruct-2507-GGUF:Q6_K_L
-      --ctx-size 131072 --flash-attn
+    cmd: '{llama-server} --port ${PORT} -hf bartowski/Qwen_Qwen3-4B-Instruct-2507-GGUF:Q6_K_L
+      --ctx-size 131072 --flash-attn'
   L3.3-GeneticLemonade-Final-70B-i1_Q4_K_M:
-    cmd: ~/llama-server --port ${PORT} -hf mradermacher/L3.3-GeneticLemonade-Final-70B-i1-GGUF:Q4_K_M
-      --ctx-size 65536 --flash-attn
+    cmd: '{llama-server} --port ${PORT} -hf mradermacher/L3.3-GeneticLemonade-Final-70B-i1-GGUF:Q4_K_M
+      --ctx-size 65536 --flash-attn'
   Qwen3-Silent-Scream-6B-i1_Q6_K:
-    cmd: ~/llama-server --port ${PORT} -hf mradermacher/Qwen3-Silent-Scream-6B-i1-GGUF:Q6_K
-      --ctx-size 32768 --flash-attn
+    cmd: '{llama-server} --port ${PORT} -hf mradermacher/Qwen3-Silent-Scream-6B-i1-GGUF:Q6_K
+      --ctx-size 32768 --flash-attn'
   Qwen3-Darkest-Jan-v1-256k-ctx-6B-i1_Q6_K:
-    cmd: ~/llama-server --port ${PORT} -hf mradermacher/Qwen3-Darkest-Jan-v1-256k-ctx-6B-i1-GGUF:Q6_K
-      --ctx-size 32768 --flash-attn
+    cmd: '{llama-server} --port ${PORT} -hf mradermacher/Qwen3-Darkest-Jan-v1-256k-ctx-6B-i1-GGUF:Q6_K
+      --ctx-size 32768 --flash-attn'
   Qwen3-ST-The-Next-Generation-II-v1-256k-ctx-6B_Q6_K:
-    cmd: ~/llama-server --port ${PORT} -hf mradermacher/Qwen3-ST-The-Next-Generation-II-v1-256k-ctx-6B-GGUF:Q6_K
-      --ctx-size 32768 --flash-attn
+    cmd: '{llama-server} --port ${PORT} -hf mradermacher/Qwen3-ST-The-Next-Generation-II-v1-256k-ctx-6B-GGUF:Q6_K
+      --ctx-size 32768 --flash-attn'
   Fallen-Gemma3-27B-v1-i1_Q5_K_M:
-    cmd: ~/llama-server --port ${PORT} -hf mradermacher/Fallen-Gemma3-27B-v1-i1-GGUF:Q5_K_M
-      --ctx-size 65536 --flash-attn
+    cmd: '{llama-server} --port ${PORT} -hf mradermacher/Fallen-Gemma3-27B-v1-i1-GGUF:Q5_K_M
+      --ctx-size 65536 --flash-attn'
   amoral-gemma3-27B-v2-qat_Q5_K_M:
-    cmd: ~/llama-server --port ${PORT} -hf mradermacher/amoral-gemma3-27B-v2-qat-GGUF:Q5_K_M
-      --ctx-size 65536 --flash-attn
+    cmd: '{llama-server} --port ${PORT} -hf mradermacher/amoral-gemma3-27B-v2-qat-GGUF:Q5_K_M
+      --ctx-size 65536 --flash-attn'
   MN-DARKEST-UNIVERSE-29B_Q4_K_M:
-    cmd: ~/llama-server --port ${PORT} -hf DavidAU/MN-DARKEST-UNIVERSE-29B-GGUF:Q4_K_M
-      --ctx-size 65536 --flash-attn
+    cmd: '{llama-server} --port ${PORT} -hf DavidAU/MN-DARKEST-UNIVERSE-29B-GGUF:Q4_K_M
+      --ctx-size 65536 --flash-attn'
   DeepSeek-R1-Distill-Qwen-32B_Q4_K_M:
-    cmd: ~/llama-server --port ${PORT} -hf bartowski/DeepSeek-R1-Distill-Qwen-32B-GGUF:Q4_K_M
-      --ctx-size 32768 --flash-attn
+    cmd: '{llama-server} --port ${PORT} -hf bartowski/DeepSeek-R1-Distill-Qwen-32B-GGUF:Q4_K_M
+      --ctx-size 32768 --flash-attn'
   Qwen3-32B-Uncensored_Q4_K_M:
-    cmd: ~/llama-server --port ${PORT} -hf mradermacher/Qwen3-32B-Uncensored-GGUF:Q4_K_M
-      --ctx-size 32768 --flash-attn
+    cmd: '{llama-server} --port ${PORT} -hf mradermacher/Qwen3-32B-Uncensored-GGUF:Q4_K_M
+      --ctx-size 32768 --flash-attn'
   OpenThinker2-32B-Uncensored_Q4_K_M:
-    cmd: ~/llama-server --port ${PORT} -hf mradermacher/OpenThinker2-32B-Uncensored-GGUF:Q4_K_M
-      --ctx-size 65536 --flash-attn
+    cmd: '{llama-server} --port ${PORT} -hf mradermacher/OpenThinker2-32B-Uncensored-GGUF:Q4_K_M
+      --ctx-size 65536 --flash-attn'
   gemma-3-4b-it_Q6_K_XL:
-    cmd: ~/llama-server --port ${PORT} -hf unsloth/gemma-3-4b-it-GGUF:Q6_K_XL --ctx-size
-      131072 --flash-attn
+    cmd: '{llama-server} --port ${PORT} -hf unsloth/gemma-3-4b-it-GGUF:Q6_K_XL --ctx-size
+      131072 --flash-attn'
   gemma-3-12b-it-qat_Q6_K_XL:
-    cmd: ~/llama-server --port ${PORT} -hf unsloth/gemma-3-12b-it-qat-GGUF:Q6_K_XL
-      --ctx-size 131072 --flash-attn
+    cmd: '{llama-server} --port ${PORT} -hf unsloth/gemma-3-12b-it-qat-GGUF:Q6_K_XL
+      --ctx-size 131072 --flash-attn'
   Hermes-4-70B_Q4_K_M:
-    cmd: ~/llama-server --port ${PORT} -hf unsloth/Hermes-4-70B-GGUF:Q4_K_M --ctx-size
-      65536 --flash-attn
+    cmd: '{llama-server} --port ${PORT} -hf unsloth/Hermes-4-70B-GGUF:Q4_K_M --ctx-size
+      65536 --flash-attn'
   L3.1-MOE-4X8B-Dark-Reasoning-Dark-Planet-Hermes-R1-Uncensored-e32-25B_Q6_K:
-    cmd: ~/llama-server --port ${PORT} -hf mradermacher/L3.1-MOE-4X8B-Dark-Reasoning-Dark-Planet-Hermes-R1-Uncensored-e32-25B-GGUF:Q6_K
-      --ctx-size 65536 --flash-attn
+    cmd: '{llama-server} --port ${PORT} -hf mradermacher/L3.1-MOE-4X8B-Dark-Reasoning-Dark-Planet-Hermes-R1-Uncensored-e32-25B-GGUF:Q6_K
+      --ctx-size 65536 --flash-attn'
   DeepSeek-R1-Distill-Llama-70B-Uncensored-v2-Unbiased-Reasoner_Q4_K_M:
-    cmd: ~/llama-server --port ${PORT} -hf mradermacher/DeepSeek-R1-Distill-Llama-70B-Uncensored-v2-Unbiased-Reasoner-GGUF:Q4_K_M
-      --ctx-size 65536 --flash-attn
+    cmd: '{llama-server} --port ${PORT} -hf mradermacher/DeepSeek-R1-Distill-Llama-70B-Uncensored-v2-Unbiased-Reasoner-GGUF:Q4_K_M
+      --ctx-size 65536 --flash-attn'
   Qwen3-30B-A3B-Instruct-2507_Q5_K_M:
-    cmd: ~/llama-server --port ${PORT} -hf mradermacher/Qwen3-30B-A3B-Instruct-2507-GGUF:Q5_K_M
-      --ctx-size 65536 --flash-attn
+    cmd: '{llama-server} --port ${PORT} -hf mradermacher/Qwen3-30B-A3B-Instruct-2507-GGUF:Q5_K_M
+      --ctx-size 65536 --flash-attn'
   Qwen3-42B-A3B-Stranger-Thoughts-Deep20x-Abliterated-Uncensored_Q5_K_M:
-    cmd: ~/llama-server --port ${PORT} -hf mradermacher/Qwen3-42B-A3B-Stranger-Thoughts-Deep20x-Abliterated-Uncensored-GGUF:Q5_K_M
-      --ctx-size 65536 --flash-attn
+    cmd: '{llama-server} --port ${PORT} -hf mradermacher/Qwen3-42B-A3B-Stranger-Thoughts-Deep20x-Abliterated-Uncensored-GGUF:Q5_K_M
+      --ctx-size 65536 --flash-attn'
   L3.1-MOE-4X8B-Dark-Reasoning-Super-Nova-RP-Hermes-R1-Uncensored-25B_Q5_K_S:
-    cmd: ~/llama-server --port ${PORT} -hf DavidAU/L3.1-MOE-4X8B-Dark-Reasoning-Super-Nova-RP-Hermes-R1-Uncensored-25B-GGUF:Q5_K_S
-      --ctx-size 65536 --flash-attn
+    cmd: '{llama-server} --port ${PORT} -hf DavidAU/L3.1-MOE-4X8B-Dark-Reasoning-Super-Nova-RP-Hermes-R1-Uncensored-25B-GGUF:Q5_K_S
+      --ctx-size 65536 --flash-attn'
   L3.1-4x8b_BlackTower_RP-V1.1-Uncensored-i1_Q4_K_M:
-    cmd: ~/llama-server --port ${PORT} -hf mradermacher/L3.1-4x8b_BlackTower_RP-V1.1-Uncensored-i1-GGUF:Q4_K_M
-      --ctx-size 65536 --flash-attn
+    cmd: '{llama-server} --port ${PORT} -hf mradermacher/L3.1-4x8b_BlackTower_RP-V1.1-Uncensored-i1-GGUF:Q4_K_M
+      --ctx-size 65536 --flash-attn'
 groups:
   langgrpah:
     members:
