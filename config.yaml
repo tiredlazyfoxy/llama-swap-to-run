@@ -77,9 +77,13 @@ models:
 groups:
   langgrpah:
     members:
-    - Qwen3-30B-A3B-Thinking-2507_Q5_K_M
     - Qwen3-30B-A3B-Thinking-2507-Amoral-Edition-i1_Q5_K_M
-    - OpenAi-GPT-oss-36B-BrainStorm20x-uncensored-i1_Q5_K_M
+    - Qwen3-Silent-Scream-6B-i1_Q6_K
+  langgrpah_alt:
+    members:
+    - Qwen3-30B-A3B-Thinking-2507_Q5_K_M
+    - Qwen3-30B-A3B-Instruct-2507_Q5_K_M
+    - Qwen3-Silent-Scream-6B-i1_Q6_K
   gemmas:
     members:
     - Fallen-Gemma3-27B-v1-i1_Q5_K_M
