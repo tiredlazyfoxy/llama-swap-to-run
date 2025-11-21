@@ -60,7 +60,7 @@ models:
     cmd: ${llama-server} -hf mradermacher/L3.1-MOE-4X8B-Dark-Reasoning-Dark-Planet-Hermes-R1-Uncensored-e32-25B-GGUF:Q6_K
       --ctx-size 65536
   DeepSeek-R1-Distill-Llama-70B-Uncensored-v2-Unbiased-Reasoner_Q4_K_M:
-    cmd: ${llama-server} -hf mradermacher/DeepSeek-R1-Distill-Llama-70B-Uncensored-v2-Unbiased-Reasoner-GGUF:Q4_K_M
+    cmd: ${llama-server} -hf mradermacher/DeepSeek-R1-Distill-Llama-70B-Uncensored-v2-Unbiased-i1-GGUF:Q4_K_M
       --ctx-size 65536
   Qwen3-30B-A3B-Instruct-2507_Q5_K_M:
     cmd: ${llama-server} -hf mradermacher/Qwen3-30B-A3B-Instruct-2507-GGUF:Q5_K_M
