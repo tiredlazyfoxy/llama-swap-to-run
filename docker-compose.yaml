@@ -6,7 +6,7 @@ services:
     ports:
       - "9292:8080"
     volumes:
-      - usr/llama-cpp:/models:/:rw
+      - usr/llama-cpp:/models
       - ./config.yaml:/app/config.yaml
     environment:
       - LLAMA_MODEL_PATH=/models
