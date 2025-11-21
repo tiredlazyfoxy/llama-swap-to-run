@@ -1,0 +1,24 @@
+version: '3.8'
+services:
+  llama-swap:
+    image: ghcr.io/mostlygeek/llama-swap:cuda
+    container_name: llama-swap
+    ports:
+      - "9292:8080"
+    volumes:
+      - usr/llama-cpp:/models:/:rw
+      - ./config.yaml:/app/config.yaml
+    environment:
+      - LLAMA_MODEL_PATH=/models
+      - HF_HOME=/models
+      - LLAMA_CACHE=/models
+      # Optional: Set default model if needed, otherwise it auto-detects or is set via API
+      # - LLAMA_DEFAULT_MODEL=my-model.gguf 
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    restart: unless-stopped
