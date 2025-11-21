@@ -10,13 +10,18 @@
 import csv
 import sys
 from pathlib import Path
-from typing import Dict, Tuple
+from typing import List
 
 try:
     import yaml  # pip install pyyaml
 except ImportError:
     print("Missing dependency: PyYAML. Install with: pip install pyyaml", file=sys.stderr)
     sys.exit(1)
+
+# Command template used for every model row.
+# Available placeholders: {repo} -> repo:quant string, {ctx} -> applied_ctx_size integer
+# Adjust flags here to change generated commands globally.
+CMD_TEMPLATE = "llama-server --port ${{PORT}} -hf {repo} --ctx-size {ctx} --flash-attn --slots:${{SLOTS}}"
 
 ROOT = Path(__file__).parent
 CSV_PATH = ROOT / "models.csv"
@@ -71,21 +76,7 @@ if models is None or not isinstance(models, dict):
     print("config.yaml has no 'models' mapping.", file=sys.stderr)
     sys.exit(4)
 
-# Build helper map from existing models: repo_with_quant -> (key, cmd_str)
-repo_to_existing: Dict[str, Tuple[str, str]] = {}
-for key, val in models.items():
-    if not isinstance(val, dict):
-        continue
-    cmd = val.get("cmd")
-    if not isinstance(cmd, str):
-        continue
-    # Find " -hf <owner>/<name>:<quant> " token
-    parts = cmd.split()
-    for i, p in enumerate(parts):
-        if p == "-hf" and i + 1 < len(parts):
-            repo_with_quant = parts[i + 1]
-            repo_to_existing[repo_with_quant] = (key, cmd)
-            break
+# We no longer parse existing commands; regeneration is purely from CSV.
 
 # Utility to derive a fallback key if needed (should be rare now that id exists)
 def derive_key_from_repo(repo_with_quant: str) -> str:
@@ -97,53 +88,59 @@ def derive_key_from_repo(repo_with_quant: str) -> str:
 
 # Utility to rebuild a cmd line, preserving extra flags from existing when present
 
-def build_cmd(existing_cmd: str, repo_with_quant: str, ctx: int) -> str:
-    base = f"llama-server --port ${{PORT}} -hf {repo_with_quant} --ctx-size {ctx}"
-    if not existing_cmd:
-        # Default: append --flash-attn to match previous usage
-        return base + " --flash-attn"
-    # Preserve flags that were present in existing_cmd but not in base
-    # We keep it simple: if '--flash-attn' was present, add it; otherwise leave as-is
-    extra = []
-    if "--flash-attn" in existing_cmd and "--flash-attn" not in base:
-        extra.append("--flash-attn")
-    if extra:
-        return base + " " + " ".join(extra)
-    return base
+def build_cmd(repo_with_quant: str, ctx: int) -> str:
+    return CMD_TEMPLATE.format(repo=repo_with_quant, ctx=ctx)
 
 # Rebuild models mapping in CSV order
 new_models = {}
-missing_in_cfg = []
+added_repos: List[str] = []
 seen_keys = set()
 for r in rows:
     repo_with_quant = r["repo"]
     ctx = r["applied"]
     model_id = r["id"] or derive_key_from_repo(repo_with_quant)
-    # Ensure uniqueness; if duplicate id encountered, append numeric suffix
     original_id = model_id
     suffix = 2
     while model_id in seen_keys:
         model_id = f"{original_id}__{suffix}"
         suffix += 1
     seen_keys.add(model_id)
-    existing_key, existing_cmd = repo_to_existing.get(repo_with_quant, (None, None))
-    cmd = build_cmd(existing_cmd or "", repo_with_quant, ctx)
+    cmd = build_cmd(repo_with_quant, ctx)
     new_models[model_id] = {"cmd": cmd}
-    if existing_key is None and repo_with_quant not in repo_to_existing:
-        missing_in_cfg.append(repo_with_quant)
+    added_repos.append(repo_with_quant)
 
 # Write back config with the same top-level keys, replacing only 'models'
 cfg["models"] = new_models
-with CONFIG_PATH.open("w", encoding="utf-8") as f:
-    yaml.safe_dump(cfg, f, sort_keys=False, allow_unicode=True)
+# Custom YAML Dumper to ensure block style for 'cmd' keys
+class BlockStyleDumper(yaml.SafeDumper):
+    pass
 
-print(f"Rebuilt models section with {len(new_models)} entries from {CSV_PATH.name}.")
+def str_presenter(dumper, data):
+    if isinstance(data, str) and ("\n" in data or data.startswith("llama-server")):
+        return dumper.represent_scalar("tag:yaml.org,2002:str", data, style="|")
+    return dumper.represent_scalar("tag:yaml.org,2002:str", data)
+
+BlockStyleDumper.add_representer(str, str_presenter)
+
+with CONFIG_PATH.open("w", encoding="utf-8") as f:
+    yaml.dump(cfg, f, Dumper=BlockStyleDumper, sort_keys=False, allow_unicode=True)
+
+print(f"Rebuilt models section with {len(new_models)} entries from {CSV_PATH.name} using template.")
 duplicate_warning = [k for k in new_models.keys() if "__" in k]
 if duplicate_warning:
     print("Duplicate ids were detected; numeric suffixes applied:")
     for k in duplicate_warning:
         print(f"  - {k}")
-if missing_in_cfg:
-    print("Note: the following repo:quant entries were not in the original config and were added:")
-    for x in missing_in_cfg:
-        print(f"  - {x}")
+print("Template used:")
+print(f"  {CMD_TEMPLATE}")
+
+
+# Adjust block scalar style to depend on string length threshold instead of fixed pattern
+def str_presenter_long(dumper, data):
+    threshold = 80  # minimum length for block scalar
+    if isinstance(data, str) and len(data) > threshold:
+        return dumper.represent_scalar("tag:yaml.org,2002:str", data, style="|")
+    return dumper.represent_scalar("tag:yaml.org,2002:str", data)
+
+# Re-register updated presenter
+BlockStyleDumper.add_representer(str, str_presenter_long)
