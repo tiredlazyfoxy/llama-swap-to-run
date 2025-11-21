@@ -12,6 +12,7 @@ services:
       - LLAMA_MODEL_PATH=/models
       - HF_HOME=/models
       - LLAMA_CACHE=/models
+      - LLAMA_ARG_FLASH_ATTN=on
       # Optional: Set default model if needed, otherwise it auto-detects or is set via API
       # - LLAMA_DEFAULT_MODEL=my-model.gguf 
     deploy:

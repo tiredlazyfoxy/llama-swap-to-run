@@ -2,7 +2,7 @@ startPort: 10000
 healthCheckTimeout: 600
 logLevel: debug
 macros:
-  "llama-server": ./llama-server --port ${PORT} -fa on
+  "llama-server": ./llama-server --port ${PORT}
   SLOTS: 2
 models:
   Qwen3-30B-A3B-Thinking-2507_Q5_K_M:
