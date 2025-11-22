@@ -176,5 +176,5 @@ groups:
     - Fallen-Gemma3-27B-v1.i1-Q5_K_M.gguf
     - amoral-gemma3-27B-v2-qat.Q5_K_M.gguf
     - gemma-3-27b-it-qat-Q5_K_M.gguf
-    - gemma-3-12b-it-qat-Q6_K_XL.gguf
+    - gemma-3-12b-it-qat-UD-Q6_K_XL.gguf
     - gemma-3-4b-it-Q6_K_XL.gguf
