@@ -91,6 +91,11 @@ models:
       ${llama-server}
         -m /models/gemma-3-12b-it-qat-UD-Q6_K_XL.gguf
         --ctx-size 131072
+  gemma-3-27b-it-qat-Q5_K_M.gguf:
+    cmd: |-
+      ${llama-server}
+        -m /models/gemma-3-27b-it-qat-Q5_K_M.gguf
+        --ctx-size 65536
   Hermes-4-70B-Q4_K_M.gguf:
     cmd: |-
       ${llama-server}
@@ -132,8 +137,6 @@ models:
         -hf lmstudio-community/gpt-oss-120b-GGUF
         --ctx-size 65535
 groups:
-
-
   qwens:
     swap: false
     exclusive: false
@@ -146,31 +149,26 @@ groups:
     - Qwen3-ST-The-Next-Generation-II-v1-256k-ctx-6B.Q6_K.gguf
     - Qwen3-4B-Thinking-2507.Q6_K.gguf
     - Qwen_Qwen3-4B-Instruct-2507-Q6_K_L.gguf
-
-  llamas:    
+  llamas:
     swap: false
     exclusive: false
     members:
-      - L3.1-4x8b_BlackTower_RP-V1.1-Uncensored-i1_Q4_K_M.gguf
-      - L3.3-GeneticLemonade-Final-70B.i1-Q4_K_M.gguf
-      - L3.1-MOE-4X8B-Dark-Reasoning-Dark-Planet-Hermes-R1-Uncensored-e32-25B.Q6_K.gguf
-  
+    - L3.1-4x8b_BlackTower_RP-V1.1-Uncensored-i1_Q4_K_M.gguf
+    - L3.3-GeneticLemonade-Final-70B.i1-Q4_K_M.gguf
+    - L3.1-MOE-4X8B-Dark-Reasoning-Dark-Planet-Hermes-R1-Uncensored-e32-25B.Q6_K.gguf
   ds:
     swap: false
-    exclusive: false  
-    members:
-      - DeepSeek-R1-Distill-Llama-70B-Uncensored-v2-Unbiased.i1-Q4_K_M.gguf
-      - DeepSeek-R1-Distill-Qwen-32B-Q4_K_M.gguf
-
-  openais:
-    swap: false 
     exclusive: false
     members:
-      - OpenAi-GPT-oss-36B-BrainStorm20x-uncensored.i1-Q5_K_M.gguf
-      - gpt-oss-120b_MXFP4_MOE
-      - gpt-oss-20b_MXFP4_MOE
-
-
+    - DeepSeek-R1-Distill-Llama-70B-Uncensored-v2-Unbiased.i1-Q4_K_M.gguf
+    - DeepSeek-R1-Distill-Qwen-32B-Q4_K_M.gguf
+  openais:
+    swap: false
+    exclusive: false
+    members:
+    - OpenAi-GPT-oss-36B-BrainStorm20x-uncensored.i1-Q5_K_M.gguf
+    - gpt-oss-120b_MXFP4_MOE
+    - gpt-oss-20b_MXFP4_MOE
   gemmas:
     swap: false
     exclusive: false
