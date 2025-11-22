@@ -19,6 +19,8 @@ tail -n +2 models.csv | cut -d',' -f2 | while read full; do
     if [ -f "models/$expected_filename" ]; then
         echo "SKIP: File already exists → models/$expected_filename"
         continue
+    else
+        echo "File not found: models/$expected_filename. Proceeding to download."        
     fi
 
     pattern="*${quant}.gguf"
