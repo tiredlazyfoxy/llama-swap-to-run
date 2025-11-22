@@ -23,6 +23,7 @@ except ImportError:
 # Adjust flags here to change generated commands globally.
 # CMD_TEMPLATE = "llama-server --port ${{PORT}} -hf {repo} --ctx-size {ctx} --flash-attn --slots:${{SLOTS}}"
 CMD_TEMPLATE = "${{llama-server}} -m models/{id} --ctx-size {ctx}"
+CMD_TEMPLATE_REMOTE = "${{llama-server}} -hf {repo} --ctx-size {ctx}"
 
 ROOT = Path(__file__).parent
 CSV_PATH = ROOT / "models.csv"
