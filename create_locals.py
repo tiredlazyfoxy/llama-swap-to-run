@@ -19,7 +19,7 @@ except ImportError:
     sys.exit(1)
 
 # Command template used for every model row.
-# Available placeholders: {id} -> model id string
+# Available placeholders: {id} -> model id string, {repo} -> repo:quant string, {ctx} -> applied_ctx_size integer
 # Adjust flags here to change generated commands globally.
 # CMD_TEMPLATE = "llama-server --port ${{PORT}} -hf {repo} --ctx-size {ctx} --flash-attn --slots:${{SLOTS}}"
 CMD_TEMPLATE = "${{llama-server}} -m models/{id} --ctx-size {ctx}"
@@ -90,8 +90,9 @@ def derive_key_from_repo(repo_with_quant: str) -> str:
 
 # Utility to rebuild a cmd line, preserving extra flags from existing when present
 
-def build_cmd(model_id: str) -> str:
-    return CMD_TEMPLATE.format(id=model_id)
+def build_cmd(model_id: str, repo_with_quant: str, ctx: int) -> str:
+    template = CMD_TEMPLATE if model_id.endswith(".gguf") else CMD_TEMPLATE_REMOTE
+    return template.format(id=model_id, repo=repo_with_quant, ctx=ctx)
 
 # Rebuild models mapping in CSV order
 new_models = {}
@@ -107,7 +108,7 @@ for r in rows:
         model_id = f"{original_id}__{suffix}"
         suffix += 1
     seen_keys.add(model_id)
-    cmd = build_cmd(model_id)
+    cmd = build_cmd(model_id, repo_with_quant, ctx)
     new_models[model_id] = {"cmd": cmd}
     added_repos.append(repo_with_quant)
 
@@ -133,9 +134,9 @@ if duplicate_warning:
     print("Duplicate ids were detected; numeric suffixes applied:")
     for k in duplicate_warning:
         print(f"  - {k}")
-print("Template used:")
-print(f"  {CMD_TEMPLATE}")
-
+print("Templates used:")
+print(f"  local: {CMD_TEMPLATE}")
+print(f"  remote: {CMD_TEMPLATE_REMOTE}")
 
 # Adjust block scalar style to depend on string length threshold instead of fixed pattern
 def str_presenter_long(dumper, data):
