@@ -124,12 +124,12 @@ models:
   gpt-oss-20b_MXFP4_MOE:
     cmd: |-
       ${llama-server}
-        -hf lmstudio-community/gpt-oss-20b-GGUF:MXFP4_MOE
+        -hf lmstudio-community/gpt-oss-20b-GGUF
         --ctx-size 65535
   gpt-oss-120b_MXFP4_MOE:
     cmd: |-
       ${llama-server}
-        -hf lmstudio-community/gpt-oss-120b-GGUF:MXFP4_MOE
+        -hf lmstudio-community/gpt-oss-120b-GGUF
         --ctx-size 65535
 groups:
   langgrpah:
