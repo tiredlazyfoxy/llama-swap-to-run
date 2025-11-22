@@ -22,8 +22,8 @@ except ImportError:
 # Available placeholders: {id} -> model id string, {repo} -> repo:quant string, {ctx} -> applied_ctx_size integer
 # Adjust flags here to change generated commands globally.
 # CMD_TEMPLATE = "llama-server --port ${{PORT}} -hf {repo} --ctx-size {ctx} --flash-attn --slots:${{SLOTS}}"
-CMD_TEMPLATE = "${{llama-server}} -m models/{id} --ctx-size {ctx}"
-CMD_TEMPLATE_REMOTE = "${{llama-server}} -hf {repo} --ctx-size {ctx}"
+CMD_TEMPLATE = "${{llama-server}}\n  -m models/{id}\n  --ctx-size {ctx}"
+CMD_TEMPLATE_REMOTE = "${{llama-server}}\n  -hf {repo}\n  --ctx-size {ctx}"
 
 ROOT = Path(__file__).parent
 CSV_PATH = ROOT / "models.csv"
@@ -118,12 +118,19 @@ cfg["models"] = new_models
 class BlockStyleDumper(yaml.SafeDumper):
     pass
 
-def str_presenter(dumper, data):
-    if isinstance(data, str) and ("\n" in data or data.startswith("llama-server")):
-        return dumper.represent_scalar("tag:yaml.org,2002:str", data, style="|")
+def block_scalar_presenter(dumper, data):
+    if isinstance(data, str):
+        normalized = data.strip()
+        if (
+            "llama-server" in data
+            or normalized.startswith("${{llama-server}}")
+            or "\n" in data
+            or len(data) > 80
+        ):
+            return dumper.represent_scalar("tag:yaml.org,2002:str", data, style="|")
     return dumper.represent_scalar("tag:yaml.org,2002:str", data)
 
-BlockStyleDumper.add_representer(str, str_presenter)
+BlockStyleDumper.add_representer(str, block_scalar_presenter)
 
 with CONFIG_PATH.open("w", encoding="utf-8") as f:
     yaml.dump(cfg, f, Dumper=BlockStyleDumper, sort_keys=False, allow_unicode=True)
@@ -137,13 +144,3 @@ if duplicate_warning:
 print("Templates used:")
 print(f"  local: {CMD_TEMPLATE}")
 print(f"  remote: {CMD_TEMPLATE_REMOTE}")
-
-# Adjust block scalar style to depend on string length threshold instead of fixed pattern
-def str_presenter_long(dumper, data):
-    threshold = 80  # minimum length for block scalar
-    if isinstance(data, str) and len(data) > threshold:
-        return dumper.represent_scalar("tag:yaml.org,2002:str", data, style="|")
-    return dumper.represent_scalar("tag:yaml.org,2002:str", data)
-
-# Re-register updated presenter
-BlockStyleDumper.add_representer(str, str_presenter_long)
