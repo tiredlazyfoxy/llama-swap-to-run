@@ -22,5 +22,5 @@ DeepSeek-R1-Distill-Llama-70B-Uncensored-v2-Unbiased.i1-Q4_K_M.gguf,mradermacher
 Qwen3-30B-A3B-Instruct-2507.Q5_K_M.gguf,mradermacher/Qwen3-30B-A3B-Instruct-2507-GGUF:Q5_K_M,262144,65536
 Qwen3-42B-A3B-Stranger-Thoughts-Deep20x-Abliterated-Uncensored.Q5_K_M.gguf,mradermacher/Qwen3-42B-A3B-Stranger-Thoughts-Deep20x-Abliterated-Uncensored-GGUF:Q5_K_M,262144,65536
 L3.1-4x8b_BlackTower_RP-V1.1-Uncensored.i1-Q4_K_M.gguf,mradermacher/L3.1-4x8b_BlackTower_RP-V1.1-Uncensored-i1-GGUF:Q4_K_M,131072,65536
-gpt-oss-20b_MXFP4_MOE,lmstudio-community/gpt-oss-20b-GGUF:MXFP4_MOE,131072,65535
-gpt-oss-120b_MXFP4_MOE,lmstudio-community/gpt-oss-120b-GGUF:MXFP4_MOE,131072,65535
+gpt-oss-20b_MXFP4_MOE,lmstudio-community/gpt-oss-20b-GGUF,131072,65535
+gpt-oss-120b_MXFP4_MOE,lmstudio-community/gpt-oss-120b-GGUF,131072,65535
