@@ -6,24 +6,22 @@ tail -n +2 models.csv | cut -d',' -f2 | while read full; do
     repo_id="${full%%:*}"
     quant="${full##*:}"
 
-    owner="${repo_id%%/*}"
     reponame="${repo_id##*/}"
 
-    pattern="*${quant}.gguf"
-
-    # Expected final filename:
-    # owner_reponame_<originalfile>.gguf
-    # But we don't know originalfile yet, so we test presence only after download.
+    # Derive the expected filename from the repo name
+    # e.g., amoral-gemma3-27B-v2-qat-GGUF -> amoral-gemma3-27B-v2-qat
+    basename="${reponame%-GGUF}"
+    expected_filename="${basename}.${quant}.gguf"
 
     echo "Processing $repo_id ($quant)"
 
-    # Check if any file for this repo+quant already exists in models/
-    found_existing=$(find models -maxdepth 1 -type f -name "${owner}_${reponame}_*${quant}.gguf" | head -n 1)
-
-    if [ -n "$found_existing" ]; then
-        echo "SKIP: File already exists → $found_existing"
+    # Check if the target file already exists in models/
+    if [ -f "models/$expected_filename" ]; then
+        echo "SKIP: File already exists → models/$expected_filename"
         continue
     fi
+
+    pattern="*${quant}.gguf"
 
     echo "Downloading $repo_id (quant: $quant)"
 
