@@ -11,6 +11,7 @@ import csv
 import sys
 from pathlib import Path
 from typing import List
+import re
 
 try:
     import yaml  # pip install pyyaml
@@ -101,15 +102,26 @@ seen_keys = set()
 for r in rows:
     repo_with_quant = r["repo"]
     ctx = r["applied"]
-    model_id = r["id"] or derive_key_from_repo(repo_with_quant)
-    original_id = model_id
+    model_id_raw = r["id"] or derive_key_from_repo(repo_with_quant)
+
+    # For multi-part models, derive a base name for the -m param.
+    # e.g. my-model-Q4-00001-of-00002.gguf -> my-model-Q4.gguf
+    m_param_filename = re.sub(r'-\d+-of-\d+(?=\.gguf|$)', '', model_id_raw, flags=re.IGNORECASE)
+    
+    # The YAML key should be the base name without extension.
+    yaml_key = m_param_filename
+    if yaml_key.lower().endswith('.gguf'):
+        yaml_key = yaml_key[:-5]
+
+    original_key = yaml_key
     suffix = 2
-    while model_id in seen_keys:
-        model_id = f"{original_id}__{suffix}"
+    while yaml_key in seen_keys:
+        yaml_key = f"{original_key}__{suffix}"
         suffix += 1
-    seen_keys.add(model_id)
-    cmd = build_cmd(model_id, repo_with_quant, ctx)
-    new_models[model_id] = {"cmd": cmd}
+    seen_keys.add(yaml_key)
+
+    cmd = build_cmd(m_param_filename, repo_with_quant, ctx)
+    new_models[yaml_key] = {"cmd": cmd}
     added_repos.append(repo_with_quant)
 
 # Write back config with the same top-level keys, replacing only 'models'

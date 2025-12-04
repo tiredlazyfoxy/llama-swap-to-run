@@ -25,3 +25,4 @@ Qwen3-42B-A3B-Stranger-Thoughts-Deep20x-Abliterated-Uncensored.Q5_K_M.gguf,mrade
 L3.1-4x8b_BlackTower_RP-V1.1-Uncensored.i1-Q4_K_M.gguf,mradermacher/L3.1-4x8b_BlackTower_RP-V1.1-Uncensored-i1-GGUF:Q4_K_M,131072,65536
 gpt-oss-20b_MXFP4_MOE,lmstudio-community/gpt-oss-20b-GGUF,131072,65535
 gpt-oss-120b_MXFP4_MOE,lmstudio-community/gpt-oss-120b-GGUF,131072,65535
+meta-llama_Llama-4-Scout-17B-16E-Instruct-Q4_K_M-00001-of-00002.gguf,bartowski/meta-llama_Llama-4-Scout-17B-16E-Instruct-old-GGUF:Q4_K_M,10485760,131072
