@@ -139,7 +139,7 @@ models:
   meta-llama_Llama-4-Scout-17B-16E-Instruct-Q4_K_M:
     cmd: |-
       ${llama-server}
-        -m /models/meta-llama_Llama-4-Scout-17B-16E-Instruct-Q4_K_M.gguf
+        -m /models/meta-llama_Llama-4-Scout-17B-16E-Instruct-Q4_K_M-00001-of-00002.gguf
         --ctx-size 131072  --jinja
 groups:
   qwens:

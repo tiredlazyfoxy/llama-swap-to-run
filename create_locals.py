@@ -104,12 +104,10 @@ for r in rows:
     ctx = r["applied"]
     model_id_raw = r["id"] or derive_key_from_repo(repo_with_quant)
 
-    # For multi-part models, derive a base name for the -m param.
-    # e.g. my-model-Q4-00001-of-00002.gguf -> my-model-Q4.gguf
-    m_param_filename = re.sub(r'-\d+-of-\d+(?=\.gguf|$)', '', model_id_raw, flags=re.IGNORECASE)
-    
-    # The YAML key should be the base name without extension.
-    yaml_key = m_param_filename
+    # For multi-part models, derive a base name for the YAML key.
+    # e.g. my-model-Q4-00001-of-00002.gguf -> my-model-Q4
+    base_name = re.sub(r'-\d+-of-\d+(?=\.gguf|$)', '', model_id_raw, flags=re.IGNORECASE)
+    yaml_key = base_name
     if yaml_key.lower().endswith('.gguf'):
         yaml_key = yaml_key[:-5]
 
@@ -120,7 +118,8 @@ for r in rows:
         suffix += 1
     seen_keys.add(yaml_key)
 
-    cmd = build_cmd(m_param_filename, repo_with_quant, ctx)
+    # The -m param must use the original filename from the CSV.
+    cmd = build_cmd(model_id_raw, repo_with_quant, ctx)
     new_models[yaml_key] = {"cmd": cmd}
     added_repos.append(repo_with_quant)
 
