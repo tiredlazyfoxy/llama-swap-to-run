@@ -141,7 +141,17 @@ models:
       ${llama-server}
         -m /models/meta-llama_Llama-4-Scout-17B-16E-Instruct-Q4_K_M-00001-of-00002.gguf
         --ctx-size 131072  --jinja
+  bge-large-en-v1.5.i1-Q6_K:
+    cmd: |-
+      ${llama-server}
+        -m /models/bge-large-en-v1.5.i1-Q6_K.gguf
+        --embedding
 groups:
+  embedders:
+    swap: false
+    exclusive: false
+    members:
+    - bge-large-en-v1.5.i1-Q6_K
   qwens:
     swap: false
     exclusive: false

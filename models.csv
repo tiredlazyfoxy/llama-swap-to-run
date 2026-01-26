@@ -1,4 +1,4 @@
-id,repo,hf_ctx_size,applied_ctx_size
+id,repo,hf_ctx_size,applied_ctx_size,embedder
 Qwen3-30B-A3B-Thinking-2507.Q5_K_M.gguf,mradermacher/Qwen3-30B-A3B-Thinking-2507-GGUF:Q5_K_M,262144,131072
 Qwen3-30B-A3B-Thinking-2507-Amoral-Edition.i1-Q5_K_M.gguf,mradermacher/Qwen3-30B-A3B-Thinking-2507-Amoral-Edition-i1-GGUF:Q5_K_M,262144,131072
 OpenAi-GPT-oss-36B-BrainStorm20x-uncensored.i1-Q5_K_M.gguf,mradermacher/OpenAi-GPT-oss-36B-BrainStorm20x-uncensored-i1-GGUF:Q5_K_M,131072,131072
@@ -26,3 +26,4 @@ L3.1-4x8b_BlackTower_RP-V1.1-Uncensored.i1-Q4_K_M.gguf,mradermacher/L3.1-4x8b_Bl
 gpt-oss-20b_MXFP4_MOE,lmstudio-community/gpt-oss-20b-GGUF,131072,65535
 gpt-oss-120b_MXFP4_MOE,lmstudio-community/gpt-oss-120b-GGUF,131072,65535
 meta-llama_Llama-4-Scout-17B-16E-Instruct-Q4_K_M-00001-of-00002.gguf,bartowski/meta-llama_Llama-4-Scout-17B-16E-Instruct-old-GGUF:Q4_K_M,10485760,131072
+bge-large-en-v1.5.i1-Q6_K.gguf,mradermacher/bge-large-en-v1.5-i1-GGUF:Q6_K,4096,4096,embedder

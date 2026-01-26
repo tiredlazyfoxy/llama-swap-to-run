@@ -4,6 +4,7 @@
 #   * id is an arbitrary model identifier (e.g. name:QUANT) allowing multiple
 #     entries referencing the same repo with differing context sizes.
 #   * Lines starting with '#' are treated as comments and skipped.
+#   * Lines with additional column "embedder" are treated as embedders.
 # - Preserves other top-level sections in config.yaml
 # - Uses existing per-repo flags like --flash-attn when present in current config
 
@@ -23,6 +24,7 @@ except ImportError:
 # Adjust flags here to change generated commands globally.
 # CMD_TEMPLATE = "llama-server --port ${{PORT}} -hf {repo} --ctx-size {ctx} --flash-attn --slots:${{SLOTS}}"
 CMD_TEMPLATE = "${{llama-server}} -hf {repo} --ctx-size {ctx}"
+EMBED_CMD_TEMPLATE = "${{llama-server}} -hf {repo} --embedder"
 
 ROOT = Path(__file__).parent
 CSV_PATH = ROOT / "models.csv"

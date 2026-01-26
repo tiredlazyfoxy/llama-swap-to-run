@@ -4,6 +4,7 @@
 #   * id is an arbitrary model identifier (e.g. name:QUANT) allowing multiple
 #     entries referencing the same repo with differing context sizes.
 #   * Lines starting with '#' are treated as comments and skipped.
+#   * Lines with additional column "embedder" are treated as embedders.
 # - Preserves other top-level sections in config.yaml
 # - Uses existing per-repo flags like --flash-attn when present in current config
 
@@ -25,6 +26,8 @@ except ImportError:
 # CMD_TEMPLATE = "llama-server --port ${{PORT}} -hf {repo} --ctx-size {ctx} --flash-attn --slots:${{SLOTS}}"
 CMD_TEMPLATE = "${{llama-server}}\n  -m /models/{id}\n  --ctx-size {ctx}  --jinja"
 CMD_TEMPLATE_REMOTE = "${{llama-server}}\n  -hf {repo}\n  --ctx-size {ctx}  --jinja"
+CMD_EMBED = "${{llama-server}}\n  -m /models/{id}\n  --embedding"
+CMD_EMBED_REMOTE = "${{llama-server}}\n -hf {repo}\n  --embedding"
 
 ROOT = Path(__file__).parent
 CSV_PATH = ROOT / "models.csv"
@@ -57,6 +60,7 @@ def load_csv_rows(path: Path):
             "repo": repo,
             "applied": int((r.get("applied_ctx_size") or "0").strip() or 0),
             "hf": (r.get("hf_ctx_size") or "").strip(),
+            "embedder": (r.get("embedder") or "").strip().lower() == "embedder",
         })
     return rows_local
 
@@ -91,8 +95,12 @@ def derive_key_from_repo(repo_with_quant: str) -> str:
 
 # Utility to rebuild a cmd line, preserving extra flags from existing when present
 
-def build_cmd(model_id: str, repo_with_quant: str, ctx: int) -> str:
-    template = CMD_TEMPLATE if model_id.endswith(".gguf") else CMD_TEMPLATE_REMOTE
+def build_cmd(model_id: str, repo_with_quant: str, ctx: int, embedder: bool = False) -> str:
+    if embedder:
+        template = CMD_EMBED if model_id.endswith(".gguf") else CMD_EMBED_REMOTE
+    else:
+        template = CMD_TEMPLATE if model_id.endswith(".gguf") else CMD_TEMPLATE_REMOTE
+
     return template.format(id=model_id, repo=repo_with_quant, ctx=ctx)
 
 # Rebuild models mapping in CSV order
@@ -103,6 +111,7 @@ for r in rows:
     repo_with_quant = r["repo"]
     ctx = r["applied"]
     model_id_raw = r["id"] or derive_key_from_repo(repo_with_quant)
+    embedder = r["embedder"]
 
     # For multi-part models, derive a base name for the YAML key.
     # e.g. my-model-Q4-00001-of-00002.gguf -> my-model-Q4
@@ -119,7 +128,7 @@ for r in rows:
     seen_keys.add(yaml_key)
 
     # The -m param must use the original filename from the CSV.
-    cmd = build_cmd(model_id_raw, repo_with_quant, ctx)
+    cmd = build_cmd(model_id_raw, repo_with_quant, ctx, embedder)
     new_models[yaml_key] = {"cmd": cmd}
     added_repos.append(repo_with_quant)
 
