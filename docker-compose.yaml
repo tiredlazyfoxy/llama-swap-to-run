@@ -17,14 +17,14 @@ services:
       # - NVIDIA_VISIBLE_DEVICES=0,2,3
       # Optional: Set default model if needed, otherwise it auto-detects or is set via API
     
-    gpus: all
+    gpus: "device=0,2,3"
 
     restart: unless-stopped
 
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              device_ids: ['0', '2', '3']
-              capabilities: [gpu]
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           device_ids: ['0', '2', '3']
+    #           capabilities: [gpu]
