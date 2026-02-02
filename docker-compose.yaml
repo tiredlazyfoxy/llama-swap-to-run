@@ -14,7 +14,7 @@ services:
       - LLAMA_CACHE=/models
       - LLAMA_ARG_FLASH_ATTN=on
       # - CUDA_VISIBLE_DEVICES="0,1,2,3"
-      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_VISIBLE_DEVICES=0,2,3
       # Optional: Set default model if needed, otherwise it auto-detects or is set via API
     
     gpus: all
