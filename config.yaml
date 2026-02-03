@@ -6,7 +6,7 @@ macros:
     ./llama-server --port ${PORT}
   SLOTS: 2
   cuda-small: '2'
-  cuda-main: '0, 1'
+  cuda-main: 0, 1
 models:
   Qwen3-30B-A3B-Thinking-2507.Q5_K_M:
     cmd: |-
@@ -14,21 +14,21 @@ models:
         -m /models/Qwen3-30B-A3B-Thinking-2507.Q5_K_M.gguf
         --ctx-size 131072  --jinja
     env:
-    - CUDA_VISIBLE_DEVICES=${cuda-main}
+    - CUDA_VISIBLE_DEVICES="${cuda-main}"
   Qwen3-30B-A3B-Thinking-2507-Amoral-Edition.i1-Q5_K_M:
     cmd: |-
       ${llama-server}
         -m /models/Qwen3-30B-A3B-Thinking-2507-Amoral-Edition.i1-Q5_K_M.gguf
         --ctx-size 131072  --jinja
     env:
-    - CUDA_VISIBLE_DEVICES=${cuda-main}
+    - CUDA_VISIBLE_DEVICES="${cuda-main}"
   OpenAi-GPT-oss-36B-BrainStorm20x-uncensored.i1-Q5_K_M:
     cmd: |-
       ${llama-server}
         -m /models/OpenAi-GPT-oss-36B-BrainStorm20x-uncensored.i1-Q5_K_M.gguf
         --ctx-size 131072  --jinja
     env:
-    - CUDA_VISIBLE_DEVICES=${cuda-main}
+    - CUDA_VISIBLE_DEVICES="${cuda-main}"
   Qwen3-4B-Thinking-2507.Q6_K:
     cmd: |-
       ${llama-server}
@@ -49,7 +49,7 @@ models:
         -m /models/L3.3-GeneticLemonade-Final-70B.i1-Q4_K_M.gguf
         --ctx-size 65536  --jinja
     env:
-    - CUDA_VISIBLE_DEVICES=${cuda-main}
+    - CUDA_VISIBLE_DEVICES="${cuda-main}"
   Qwen3-Silent-Scream-6B.i1-Q6_K:
     cmd: |-
       ${llama-server}
@@ -77,42 +77,42 @@ models:
         -m /models/Fallen-Gemma3-27B-v1.i1-Q5_K_M.gguf
         --ctx-size 65536  --jinja
     env:
-    - CUDA_VISIBLE_DEVICES=${cuda-main}
+    - CUDA_VISIBLE_DEVICES="${cuda-main}"
   amoral-gemma3-27B-v2-qat.Q5_K_M:
     cmd: |-
       ${llama-server}
         -m /models/amoral-gemma3-27B-v2-qat.Q5_K_M.gguf
         --ctx-size 65536  --jinja
     env:
-    - CUDA_VISIBLE_DEVICES=${cuda-main}
+    - CUDA_VISIBLE_DEVICES="${cuda-main}"
   MN-DARKEST-UNIVERSE-29B_Q4_K_M:
     cmd: |-
       ${llama-server}
         -hf DavidAU/MN-DARKEST-UNIVERSE-29B-GGUF:Q4_K_M
         --ctx-size 65536  --jinja
     env:
-    - CUDA_VISIBLE_DEVICES=${cuda-main}
+    - CUDA_VISIBLE_DEVICES="${cuda-main}"
   DeepSeek-R1-Distill-Qwen-32B-Q4_K_M:
     cmd: |-
       ${llama-server}
         -m /models/DeepSeek-R1-Distill-Qwen-32B-Q4_K_M.gguf
         --ctx-size 32768  --jinja
     env:
-    - CUDA_VISIBLE_DEVICES=${cuda-main}
+    - CUDA_VISIBLE_DEVICES="${cuda-main}"
   Qwen3-32B-Uncensored.Q4_K_M:
     cmd: |-
       ${llama-server}
         -m /models/Qwen3-32B-Uncensored.Q4_K_M.gguf
         --ctx-size 32768  --jinja
     env:
-    - CUDA_VISIBLE_DEVICES=${cuda-main}
+    - CUDA_VISIBLE_DEVICES="${cuda-main}"
   OpenThinker2-32B-Uncensored.Q4_K_M:
     cmd: |-
       ${llama-server}
         -m /models/OpenThinker2-32B-Uncensored.Q4_K_M.gguf
         --ctx-size 65536  --jinja
     env:
-    - CUDA_VISIBLE_DEVICES=${cuda-main}
+    - CUDA_VISIBLE_DEVICES="${cuda-main}"
   gemma-3-4b-it-UD-Q6_K_XL:
     cmd: |-
       ${llama-server}
@@ -133,70 +133,70 @@ models:
         -m /models/gemma-3-27b-it-qat-Q5_K_M.gguf
         --ctx-size 65536  --jinja
     env:
-    - CUDA_VISIBLE_DEVICES=${cuda-main}
+    - CUDA_VISIBLE_DEVICES="${cuda-main}"
   Hermes-4-70B-Q4_K_M:
     cmd: |-
       ${llama-server}
         -m /models/Hermes-4-70B-Q4_K_M.gguf
         --ctx-size 65536  --jinja
     env:
-    - CUDA_VISIBLE_DEVICES=${cuda-main}
+    - CUDA_VISIBLE_DEVICES="${cuda-main}"
   L3.1-MOE-4X8B-Dark-Reasoning-Dark-Planet-Hermes-R1-Uncensored-e32-25B.Q6_K:
     cmd: |-
       ${llama-server}
         -m /models/L3.1-MOE-4X8B-Dark-Reasoning-Dark-Planet-Hermes-R1-Uncensored-e32-25B.Q6_K.gguf
         --ctx-size 65536  --jinja
     env:
-    - CUDA_VISIBLE_DEVICES=${cuda-main}
+    - CUDA_VISIBLE_DEVICES="${cuda-main}"
   DeepSeek-R1-Distill-Llama-70B-Uncensored-v2-Unbiased.i1-Q4_K_M:
     cmd: |-
       ${llama-server}
         -m /models/DeepSeek-R1-Distill-Llama-70B-Uncensored-v2-Unbiased.i1-Q4_K_M.gguf
         --ctx-size 65536  --jinja
     env:
-    - CUDA_VISIBLE_DEVICES=${cuda-main}
+    - CUDA_VISIBLE_DEVICES="${cuda-main}"
   Qwen3-30B-A3B-Instruct-2507.Q5_K_M:
     cmd: |-
       ${llama-server}
         -m /models/Qwen3-30B-A3B-Instruct-2507.Q5_K_M.gguf
         --ctx-size 65536  --jinja
     env:
-    - CUDA_VISIBLE_DEVICES=${cuda-main}
+    - CUDA_VISIBLE_DEVICES="${cuda-main}"
   Qwen3-42B-A3B-Stranger-Thoughts-Deep20x-Abliterated-Uncensored.Q5_K_M:
     cmd: |-
       ${llama-server}
         -m /models/Qwen3-42B-A3B-Stranger-Thoughts-Deep20x-Abliterated-Uncensored.Q5_K_M.gguf
         --ctx-size 65536  --jinja
     env:
-    - CUDA_VISIBLE_DEVICES=${cuda-main}
+    - CUDA_VISIBLE_DEVICES="${cuda-main}"
   L3.1-4x8b_BlackTower_RP-V1.1-Uncensored.i1-Q4_K_M:
     cmd: |-
       ${llama-server}
         -m /models/L3.1-4x8b_BlackTower_RP-V1.1-Uncensored.i1-Q4_K_M.gguf
         --ctx-size 65536  --jinja
     env:
-    - CUDA_VISIBLE_DEVICES=${cuda-main}
+    - CUDA_VISIBLE_DEVICES="${cuda-main}"
   gpt-oss-20b_MXFP4_MOE:
     cmd: |-
       ${llama-server}
         -hf lmstudio-community/gpt-oss-20b-GGUF
         --ctx-size 65535  --jinja
     env:
-    - CUDA_VISIBLE_DEVICES=${cuda-main}
+    - CUDA_VISIBLE_DEVICES="${cuda-main}"
   gpt-oss-120b_MXFP4_MOE:
     cmd: |-
       ${llama-server}
         -hf lmstudio-community/gpt-oss-120b-GGUF
         --ctx-size 65535  --jinja
     env:
-    - CUDA_VISIBLE_DEVICES=${cuda-main}
+    - CUDA_VISIBLE_DEVICES="${cuda-main}"
   meta-llama_Llama-4-Scout-17B-16E-Instruct-Q4_K_M:
     cmd: |-
       ${llama-server}
         -m /models/meta-llama_Llama-4-Scout-17B-16E-Instruct-Q4_K_M-00001-of-00002.gguf
         --ctx-size 131072  --jinja
     env:
-    - CUDA_VISIBLE_DEVICES=${cuda-main}
+    - CUDA_VISIBLE_DEVICES="${cuda-main}"
   bge-large-en-v1.5.i1-Q6_K:
     cmd: |-
       ${llama-server}
