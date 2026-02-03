@@ -5,6 +5,7 @@ services:
     ports:
       - "9292:8080"
     user: "0:0"
+    pull_policy: "always" 
     volumes:
       - ./models:/models
       - ./config.yaml:/app/config.yaml

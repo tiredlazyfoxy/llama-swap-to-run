@@ -84,7 +84,7 @@ models:
         -m /models/amoral-gemma3-27B-v2-qat.Q5_K_M.gguf
         --ctx-size 65536  --jinja
     env:
-    - ${cuda-main}
+    - CUDA_VISIBLE_DEVICES=${cuda-main}
   MN-DARKEST-UNIVERSE-29B_Q4_K_M:
     cmd: |-
       ${llama-server}
