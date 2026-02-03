@@ -5,8 +5,8 @@ macros:
   "llama-server": |-
     ./llama-server --port ${PORT}
   SLOTS: 2
-#  cuda-small: CUDA_VISIBLE_DEVICES=2
-#  cuda-main: CUDA_VISIBLE_DEVICES=0, 1
+  cuda-small: CUDA_VISIBLE_DEVICES=2
+  cuda-main: CUDA_VISIBLE_DEVICES=0, 1
 models:
   Qwen3-30B-A3B-Thinking-2507.Q5_K_M:
     cmd: |-
