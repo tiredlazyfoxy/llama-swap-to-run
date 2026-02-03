@@ -5,8 +5,8 @@ macros:
   "llama-server": |-
     ./llama-server --port ${PORT}
   SLOTS: 2
-  cuda-small: '2'
-  cuda-main: 0, 1
+  cuda-small: CUDA_VISIBLE_DEVICES=2
+  cuda-main: CUDA_VISIBLE_DEVICES=0, 1
 models:
   Qwen3-30B-A3B-Thinking-2507.Q5_K_M:
     cmd: |-
@@ -56,7 +56,7 @@ models:
         -m /models/Qwen3-Silent-Scream-6B.i1-Q6_K.gguf
         --ctx-size 32768  --jinja
     env:
-    - CUDA_VISIBLE_DEVICES=${cuda-small}
+    - ${cuda-small}
   Qwen3-Darkest-Jan-v1-256k-ctx-6B.i1-Q6_K:
     cmd: |-
       ${llama-server}
@@ -84,7 +84,7 @@ models:
         -m /models/amoral-gemma3-27B-v2-qat.Q5_K_M.gguf
         --ctx-size 65536  --jinja
     env:
-    - CUDA_VISIBLE_DEVICES=0,1
+    - ${cuda-main}
   MN-DARKEST-UNIVERSE-29B_Q4_K_M:
     cmd: |-
       ${llama-server}
