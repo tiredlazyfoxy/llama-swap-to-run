@@ -82,6 +82,7 @@ models = cfg.get("models")
 if models is None or not isinstance(models, dict):
     print("config.yaml has no 'models' mapping.", file=sys.stderr)
     sys.exit(4)
+existing_models = models
 
 # We no longer parse existing commands; regeneration is purely from CSV.
 
@@ -129,7 +130,14 @@ for r in rows:
 
     # The -m param must use the original filename from the CSV.
     cmd = build_cmd(model_id_raw, repo_with_quant, ctx, embedder)
-    new_models[yaml_key] = {"cmd": cmd}
+
+    preserved_entry = {}
+    existing_entry = existing_models.get(yaml_key)
+    if isinstance(existing_entry, dict):
+        preserved_entry = dict(existing_entry)
+
+    preserved_entry["cmd"] = cmd
+    new_models[yaml_key] = preserved_entry
     added_repos.append(repo_with_quant)
 
 # Write back config with the same top-level keys, replacing only 'models'
