@@ -5,8 +5,6 @@ macros:
   "llama-server": |-
     ./llama-server --port ${PORT}
   SLOTS: 2
-  #cuda-small: CUDA_VISIBLE_DEVICES=2
-  #cuda-main: CUDA_VISIBLE_DEVICES=0, 1
 models:
   Qwen3-30B-A3B-Thinking-2507.Q5_K_M:
     cmd: |-
@@ -204,6 +202,20 @@ models:
         --embedding
     env:
     - CUDA_VISIBLE_DEVICES=2
+  Qwen3.5-27B-Q5_K_M:
+    cmd: |-
+      ${llama-server}
+        -m /models/Qwen3.5-27B-Q5_K_M.gguf
+        --ctx-size 65536  --jinja
+    env:
+    - CUDA_VISIBLE_DEVICES=0,1
+  Qwen3.5-35B-A3B-Q5_K_M:
+    cmd: |-
+      ${llama-server}
+        -m /models/Qwen3.5-35B-A3B-Q5_K_M.gguf
+        --ctx-size 65536  --jinja
+    env:
+    - CUDA_VISIBLE_DEVICES=0,1
 groups:
   embedders:
     swap: false

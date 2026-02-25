@@ -27,3 +27,6 @@ gpt-oss-20b_MXFP4_MOE,lmstudio-community/gpt-oss-20b-GGUF,131072,65535
 gpt-oss-120b_MXFP4_MOE,lmstudio-community/gpt-oss-120b-GGUF,131072,65535
 meta-llama_Llama-4-Scout-17B-16E-Instruct-Q4_K_M-00001-of-00002.gguf,bartowski/meta-llama_Llama-4-Scout-17B-16E-Instruct-old-GGUF:Q4_K_M,10485760,131072
 bge-large-en-v1.5.i1-Q6_K.gguf,mradermacher/bge-large-en-v1.5-i1-GGUF:Q6_K,4096,4096,embedder
+Qwen3.5-27B-Q5_K_M.gguf,unsloth/Qwen3.5-27B-GGUF:Q5_K_M,262144,65536
+Qwen3.5-35B-A3B-Q5_K_M.gguf,unsloth/Qwen3.5-35B-A3B-GGUF:Q5_K_M,262144,65536
+
