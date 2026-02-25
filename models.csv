@@ -30,3 +30,4 @@ bge-large-en-v1.5.i1-Q6_K.gguf,mradermacher/bge-large-en-v1.5-i1-GGUF:Q6_K,4096,
 Qwen3.5-27B-Q5_K_M.gguf,unsloth/Qwen3.5-27B-GGUF:Q5_K_M,262144,65536
 Qwen3.5-35B-A3B-Q5_K_M.gguf,unsloth/Qwen3.5-35B-A3B-GGUF:Q5_K_M,262144,65536
 Qwen3.5-27B-heretic-Q5_K_M.gguf,juanml82/Qwen3.5-27B-heretic-GGUF:Q5_K_M,262144,65536
+qwen3-next-80b-a3b-thinking-mxfp4_moe.gguf,juanml82/Huihui-Qwen3-Next-80B-A3B-Thinking-abliterated-gguf:MXFP4_MOE,262144,65536

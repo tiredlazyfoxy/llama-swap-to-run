@@ -223,6 +223,13 @@ models:
         --ctx-size 65536  --jinja
     env:
     - CUDA_VISIBLE_DEVICES=0,1
+  qwen3-next-80b-a3b-thinking-mxfp4_moe:
+    cmd: |-
+      ${llama-server}
+        -m /models/qwen3-next-80b-a3b-thinking-mxfp4_moe.gguf
+        --ctx-size 65536  --jinja
+    env:
+    - CUDA_VISIBLE_DEVICES=0,1
 groups:
   embedders:
     swap: false
