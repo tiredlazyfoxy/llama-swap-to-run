@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
 # Rebuilds the `models:` section in config.yaml from models.csv
-# - models.csv columns: id, repo (owner/name:QUANT), hf_ctx_size, applied_ctx_size
+# - models.csv columns: id, repo (owner/name:QUANT), hf_ctx_size, applied_ctx_size, type
 #   * id is an arbitrary model identifier (e.g. name:QUANT) allowing multiple
 #     entries referencing the same repo with differing context sizes.
 #   * Lines starting with '#' are treated as comments and skipped.
-#   * Lines with additional column "embedder" are treated as embedders.
+#   * type column: "embedder", "small", or "big" (default when empty).
+#     - embedder: uses --embedding cmd, CUDA_VISIBLE_DEVICES=2
+#     - small: normal cmd, CUDA_VISIBLE_DEVICES=2
+#     - big: normal cmd, CUDA_VISIBLE_DEVICES=0,1
 # - Preserves other top-level sections in config.yaml
 # - Uses existing per-repo flags like --flash-attn when present in current config
 
@@ -57,6 +60,7 @@ def load_csv_rows(path: Path):
             "repo": repo,
             "applied": int((r.get("applied_ctx_size") or "0").strip() or 0),
             "hf": (r.get("hf_ctx_size") or "").strip(),
+            "type": (r.get("type") or "").strip().lower() or "big",
         })
     return rows_local
 
@@ -91,8 +95,15 @@ def derive_key_from_repo(repo_with_quant: str) -> str:
 
 # Utility to rebuild a cmd line, preserving extra flags from existing when present
 
-def build_cmd(repo_with_quant: str, ctx: int) -> str:
+def build_cmd(repo_with_quant: str, ctx: int, model_type: str = "big") -> str:
+    if model_type == "embedder":
+        return EMBED_CMD_TEMPLATE.format(repo=repo_with_quant)
     return CMD_TEMPLATE.format(repo=repo_with_quant, ctx=ctx)
+
+def cuda_env(model_type: str) -> str:
+    if model_type in ("embedder", "small"):
+        return "CUDA_VISIBLE_DEVICES=2"
+    return "CUDA_VISIBLE_DEVICES=0,1"
 
 # Rebuild models mapping in CSV order
 new_models = {}
@@ -108,8 +119,9 @@ for r in rows:
         model_id = f"{original_id}__{suffix}"
         suffix += 1
     seen_keys.add(model_id)
-    cmd = build_cmd(repo_with_quant, ctx)
-    new_models[model_id] = {"cmd": cmd}
+    model_type = r["type"]
+    cmd = build_cmd(repo_with_quant, ctx, model_type)
+    new_models[model_id] = {"cmd": cmd, "env": [cuda_env(model_type)]}
     added_repos.append(repo_with_quant)
 
 # Write back config with the same top-level keys, replacing only 'models'

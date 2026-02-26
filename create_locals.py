@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
 # Rebuilds the `models:` section in config.yaml from models.csv
-# - models.csv columns: id, repo (owner/name:QUANT), hf_ctx_size, applied_ctx_size
+# - models.csv columns: id, repo (owner/name:QUANT), hf_ctx_size, applied_ctx_size, type
 #   * id is an arbitrary model identifier (e.g. name:QUANT) allowing multiple
 #     entries referencing the same repo with differing context sizes.
 #   * Lines starting with '#' are treated as comments and skipped.
-#   * Lines with additional column "embedder" are treated as embedders.
+#   * type column: "embedder", "small", or "big" (default when empty).
+#     - embedder: uses --embedding cmd, CUDA_VISIBLE_DEVICES=2
+#     - small: normal cmd, CUDA_VISIBLE_DEVICES=2
+#     - big: normal cmd, CUDA_VISIBLE_DEVICES=0,1
 # - Preserves other top-level sections in config.yaml
 # - Uses existing per-repo flags like --flash-attn when present in current config
 
@@ -60,7 +63,7 @@ def load_csv_rows(path: Path):
             "repo": repo,
             "applied": int((r.get("applied_ctx_size") or "0").strip() or 0),
             "hf": (r.get("hf_ctx_size") or "").strip(),
-            "embedder": (r.get("embedder") or "").strip().lower() == "embedder",
+            "type": (r.get("type") or "").strip().lower() or "big",
         })
     return rows_local
 
@@ -96,13 +99,18 @@ def derive_key_from_repo(repo_with_quant: str) -> str:
 
 # Utility to rebuild a cmd line, preserving extra flags from existing when present
 
-def build_cmd(model_id: str, repo_with_quant: str, ctx: int, embedder: bool = False) -> str:
-    if embedder:
+def build_cmd(model_id: str, repo_with_quant: str, ctx: int, model_type: str = "big") -> str:
+    if model_type == "embedder":
         template = CMD_EMBED if model_id.endswith(".gguf") else CMD_EMBED_REMOTE
     else:
         template = CMD_TEMPLATE if model_id.endswith(".gguf") else CMD_TEMPLATE_REMOTE
 
     return template.format(id=model_id, repo=repo_with_quant, ctx=ctx)
+
+def cuda_env(model_type: str) -> str:
+    if model_type in ("embedder", "small"):
+        return "CUDA_VISIBLE_DEVICES=2"
+    return "CUDA_VISIBLE_DEVICES=0,1"
 
 # Rebuild models mapping in CSV order
 new_models = {}
@@ -112,7 +120,7 @@ for r in rows:
     repo_with_quant = r["repo"]
     ctx = r["applied"]
     model_id_raw = r["id"] or derive_key_from_repo(repo_with_quant)
-    embedder = r["embedder"]
+    model_type = r["type"]
 
     # For multi-part models, derive a base name for the YAML key.
     # e.g. my-model-Q4-00001-of-00002.gguf -> my-model-Q4
@@ -129,7 +137,7 @@ for r in rows:
     seen_keys.add(yaml_key)
 
     # The -m param must use the original filename from the CSV.
-    cmd = build_cmd(model_id_raw, repo_with_quant, ctx, embedder)
+    cmd = build_cmd(model_id_raw, repo_with_quant, ctx, model_type)
 
     preserved_entry = {}
     existing_entry = existing_models.get(yaml_key)
@@ -137,6 +145,7 @@ for r in rows:
         preserved_entry = dict(existing_entry)
 
     preserved_entry["cmd"] = cmd
+    preserved_entry["env"] = [cuda_env(model_type)]
     new_models[yaml_key] = preserved_entry
     added_repos.append(repo_with_quant)
 
