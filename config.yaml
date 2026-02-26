@@ -195,6 +195,13 @@ models:
         --ctx-size 65536  --jinja
     env:
     - CUDA_VISIBLE_DEVICES=2
+  Qwen3.5-35B-A3B-heretic.Q5_K_M:
+    cmd: |-
+      ${llama-server}
+        -m /models/Qwen3.5-35B-A3B-heretic.Q5_K_M.gguf
+        --ctx-size 65536  --jinja
+    env:
+    - CUDA_VISIBLE_DEVICES=0,1
 groups:
   embedders:
     swap: false

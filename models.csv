@@ -24,5 +24,6 @@ Big-Tiger-Gemma-27B-v3-heretic.i1-Q5_K_M.gguf,mradermacher/Big-Tiger-Gemma-27B-v
 Llama-3.3-8B-Instruct-128K-heretic.Q5_K_M.gguf,mradermacher/Llama-3.3-8B-Instruct-128K-heretic-GGUF:Q5_K_M,131072,65536,small
 gpt-oss-20b-uncensored-heretic.i1-MXFP4_MOE.gguf,mradermacher/gpt-oss-20b-uncensored-heretic-i1-GGUF:MXFP4_MOE,131072,65535
 gpt-oss-120b-heretic-v1.i1-MXFP4_MOE.gguf,mradermacher/gpt-oss-120b-heretic-v1-i1-GGUF:MXFP4_MOE,131072,65535
-Qwen3-VL-8B-Thinking-heretic-imatrix-Q5_K_M.gguf,ZuzeTt/Qwen3-VL-8B-Thinking-Imatrix-heretic,262144,65536,small
+Qwen3-VL-8B-Thinking-heretic-imatrix-Q5_K_M.gguf,ZuzeTt/Qwen3-VL-8B-Thinking-Imatrix-heretic:Q5_K_M,262144,65536,small
 Qwen3-VL-8B-GLM-4.7-Flash-Heretic-Uncensored-Thinking.i1-Q5_K_M.gguf,mradermacher/Qwen3-VL-8B-GLM-4.7-Flash-Heretic-Uncensored-Thinking-i1-GGUF:Q5_K_M,262144,65536,small
+Qwen3.5-35B-A3B-heretic.Q5_K_M.gguf,mradermacher/Qwen3.5-35B-A3B-heretic-GGUF:Q5_K_M,262144,65536
