@@ -202,6 +202,13 @@ models:
         --ctx-size 65536  --jinja
     env:
     - CUDA_VISIBLE_DEVICES=0,1
+  Qwen3.5-122B-A10B-abliterated-Q4_K_M:
+    cmd: |-
+      ${llama-server}
+        -m /models/Qwen3.5-122B-A10B-abliterated-Q4_K_M-00001-of-00002.gguf
+        --ctx-size 65536  --jinja
+    env:
+    - CUDA_VISIBLE_DEVICES=0,1
 groups:
   embedders:
     swap: false

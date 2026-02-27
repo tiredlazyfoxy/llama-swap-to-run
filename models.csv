@@ -27,3 +27,4 @@ gpt-oss-120b-heretic-v1.i1-MXFP4_MOE.gguf,mradermacher/gpt-oss-120b-heretic-v1-i
 Qwen3-VL-8B-Thinking-heretic-imatrix-Q5_K_M.gguf,ZuzeTt/Qwen3-VL-8B-Thinking-Imatrix-heretic:Q5_K_M,262144,65536,small
 Qwen3-VL-8B-GLM-4.7-Flash-Heretic-Uncensored-Thinking.i1-Q5_K_M.gguf,mradermacher/Qwen3-VL-8B-GLM-4.7-Flash-Heretic-Uncensored-Thinking-i1-GGUF:Q5_K_M,262144,65536,small
 Qwen3.5-35B-A3B-heretic.Q5_K_M.gguf,mradermacher/Qwen3.5-35B-A3B-heretic-GGUF:Q5_K_M,262144,65536
+Qwen3.5-122B-A10B-abliterated-Q4_K_M-00001-of-00002.gguf,TNT3530/Qwen3.5-122B-A10B-abliterated-GGUF:Q4_K_M,262144,65536
