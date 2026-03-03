@@ -208,7 +208,7 @@ models:
         -m /models/Qwen3.5-9B-heretic.i1-Q5_K_M.gguf
         --ctx-size 65536  --jinja
     env:
-    - CUDA_VISIBLE_DEVICES=0,1
+    - CUDA_VISIBLE_DEVICES=2
   Qwen3.5-122B-A10B-heretic.i1-Q4_K_M:
     cmd: |-
       ${llama-server}
