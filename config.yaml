@@ -37,21 +37,21 @@ models:
   Qwen3-Darkest-Jan-v1-256k-ctx-6B.i1-Q6_K:
     cmd: |-
       ${llama-server}
-        -m /models/Qwen3-Darkest-Jan-v1-256k-ctx-6B.i1-Q6_K.gguf
+        -m /slow_models/Qwen3-Darkest-Jan-v1-256k-ctx-6B.i1-Q6_K.gguf
         --ctx-size 32768  --jinja
     env:
     - CUDA_VISIBLE_DEVICES=2
   Qwen3-ST-The-Next-Generation-II-v1-256k-ctx-6B.Q6_K:
     cmd: |-
       ${llama-server}
-        -m /models/Qwen3-ST-The-Next-Generation-II-v1-256k-ctx-6B.Q6_K.gguf
+        -m /slow_models/Qwen3-ST-The-Next-Generation-II-v1-256k-ctx-6B.Q6_K.gguf
         --ctx-size 32768  --jinja
     env:
     - CUDA_VISIBLE_DEVICES=2
   Fallen-Gemma3-27B-v1.i1-Q5_K_M:
     cmd: |-
       ${llama-server}
-        -m /models/Fallen-Gemma3-27B-v1.i1-Q5_K_M.gguf
+        -m /slow_models/Fallen-Gemma3-27B-v1.i1-Q5_K_M.gguf
         --ctx-size 65536  --jinja
     env:
     - CUDA_VISIBLE_DEVICES=0,1
@@ -79,7 +79,7 @@ models:
   gemma-3-27b-it-qat-Q5_K_M:
     cmd: |-
       ${llama-server}
-        -m /models/gemma-3-27b-it-qat-Q5_K_M.gguf
+        -m /slow_models/gemma-3-27b-it-qat-Q5_K_M.gguf
         --ctx-size 65536  --jinja
     env:
     - CUDA_VISIBLE_DEVICES=0,1
@@ -114,7 +114,7 @@ models:
   meta-llama_Llama-4-Scout-17B-16E-Instruct-Q4_K_M:
     cmd: |-
       ${llama-server}
-        -m /models/meta-llama_Llama-4-Scout-17B-16E-Instruct-Q4_K_M-00001-of-00002.gguf
+        -m /slow_models/meta-llama_Llama-4-Scout-17B-16E-Instruct-Q4_K_M-00001-of-00002.gguf
         --ctx-size 131072  --jinja
     env:
     - CUDA_VISIBLE_DEVICES=0,1
@@ -149,7 +149,7 @@ models:
   qwen3-next-80b-a3b-thinking-mxfp4_moe:
     cmd: |-
       ${llama-server}
-        -m /models/qwen3-next-80b-a3b-thinking-mxfp4_moe.gguf
+        -m /slow_models/qwen3-next-80b-a3b-thinking-mxfp4_moe.gguf
         --ctx-size 65536  --jinja
     env:
     - CUDA_VISIBLE_DEVICES=0,1
@@ -163,7 +163,7 @@ models:
   Llama-3.3-8B-Instruct-128K-heretic.Q5_K_M:
     cmd: |-
       ${llama-server}
-        -m /models/Llama-3.3-8B-Instruct-128K-heretic.Q5_K_M.gguf
+        -m /slow_models/Llama-3.3-8B-Instruct-128K-heretic.Q5_K_M.gguf
         --ctx-size 65536  --jinja
     env:
     - CUDA_VISIBLE_DEVICES=2
