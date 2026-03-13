@@ -11,10 +11,16 @@
 # - Preserves other top-level sections in config.yaml
 # - Uses existing per-repo flags like --flash-attn when present in current config
 
+
+### DEPRECATED: This file was renamed to create_locals.py to reflect its new focus on local models. The original create.py is now a wrapper that calls create_locals.py and can be extended in the future to handle remote models if needed. For now, all logic is in create_locals.py.
+
 import csv
 import sys
 from pathlib import Path
 from typing import List
+
+raise DeprecationWarning("create.py is deprecated; use create_locals.py instead. This wrapper may be removed in the future.")
+
 
 try:
     import yaml  # pip install pyyaml
