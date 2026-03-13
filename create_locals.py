@@ -4,10 +4,11 @@
 #   * id is an arbitrary model identifier (e.g. name:QUANT) allowing multiple
 #     entries referencing the same repo with differing context sizes.
 #   * Lines starting with '#' are treated as comments and skipped.
-#   * type column: "embedder", "small", or "big" (default when empty).
-#     - embedder: uses --embedding cmd, CUDA_VISIBLE_DEVICES=2
-#     - small: normal cmd, CUDA_VISIBLE_DEVICES=2
-#     - big: normal cmd, CUDA_VISIBLE_DEVICES=0,1
+#   * type column: +-separated modifiers (default: big GPU, fast SSD, normal inference)
+#     - embedder: adds --embedding flag (instead of --ctx-size/--jinja)
+#     - small: uses CUDA_VISIBLE_DEVICES=2 (instead of 0,1)
+#     - slow: loads from /slow_models/ instead of /models/ (HDD storage)
+#     Combine with +, e.g.: small+slow, embedder+slow
 # - Preserves other top-level sections in config.yaml
 # - Uses existing per-repo flags like --flash-attn when present in current config
 
@@ -23,14 +24,10 @@ except ImportError:
     print("Missing dependency: PyYAML. Install with: pip install pyyaml", file=sys.stderr)
     sys.exit(1)
 
-# Command template used for every model row.
-# Available placeholders: {id} -> model id string, {repo} -> repo:quant string, {ctx} -> applied_ctx_size integer
-# Adjust flags here to change generated commands globally.
-# CMD_TEMPLATE = "llama-server --port ${{PORT}} -hf {repo} --ctx-size {ctx} --flash-attn --slots:${{SLOTS}}"
-CMD_TEMPLATE = "${{llama-server}}\n  -m /models/{id}\n  --ctx-size {ctx}  --jinja"
-CMD_TEMPLATE_REMOTE = "${{llama-server}}\n  -hf {repo}\n  --ctx-size {ctx}  --jinja"
-CMD_EMBED = "${{llama-server}}\n  -m /models/{id}\n  --embedding"
-CMD_EMBED_REMOTE = "${{llama-server}}\n -hf {repo}\n  --embedding"
+# Command templates: local (for .gguf files) and remote (for HF repos).
+# Placeholders: {models_dir}, {id}, {repo}, {mode_flags}
+CMD_LOCAL  = "${{llama-server}}\n  -m {models_dir}/{id}\n  {mode_flags}"
+CMD_REMOTE = "${{llama-server}}\n  -hf {repo}\n  {mode_flags}"
 
 ROOT = Path(__file__).parent
 CSV_PATH = ROOT / "models.csv"
@@ -63,7 +60,7 @@ def load_csv_rows(path: Path):
             "repo": repo,
             "applied": int((r.get("applied_ctx_size") or "0").strip() or 0),
             "hf": (r.get("hf_ctx_size") or "").strip(),
-            "type": (r.get("type") or "").strip().lower() or "big",
+            "modifiers": set(filter(None, (r.get("type") or "").strip().lower().split("+"))),
         })
     return rows_local
 
@@ -99,16 +96,15 @@ def derive_key_from_repo(repo_with_quant: str) -> str:
 
 # Utility to rebuild a cmd line, preserving extra flags from existing when present
 
-def build_cmd(model_id: str, repo_with_quant: str, ctx: int, model_type: str = "big") -> str:
-    if model_type == "embedder":
-        template = CMD_EMBED if model_id.endswith(".gguf") else CMD_EMBED_REMOTE
-    else:
-        template = CMD_TEMPLATE if model_id.endswith(".gguf") else CMD_TEMPLATE_REMOTE
+def build_cmd(model_id: str, repo_with_quant: str, ctx: int, modifiers: set) -> str:
+    is_local = model_id.endswith(".gguf")
+    mode_flags = "--embedding" if "embedder" in modifiers else f"--ctx-size {ctx}  --jinja"
+    models_dir = "/slow_models" if "slow" in modifiers else "/models"
+    template = CMD_LOCAL if is_local else CMD_REMOTE
+    return template.format(models_dir=models_dir, id=model_id, repo=repo_with_quant, mode_flags=mode_flags)
 
-    return template.format(id=model_id, repo=repo_with_quant, ctx=ctx)
-
-def cuda_env(model_type: str) -> str:
-    if model_type in ("embedder", "small"):
+def cuda_env(modifiers: set) -> str:
+    if modifiers & {"embedder", "small"}:
         return "CUDA_VISIBLE_DEVICES=2"
     return "CUDA_VISIBLE_DEVICES=0,1"
 
@@ -120,7 +116,7 @@ for r in rows:
     repo_with_quant = r["repo"]
     ctx = r["applied"]
     model_id_raw = r["id"] or derive_key_from_repo(repo_with_quant)
-    model_type = r["type"]
+    modifiers = r["modifiers"]
 
     # For multi-part models, derive a base name for the YAML key.
     # e.g. my-model-Q4-00001-of-00002.gguf -> my-model-Q4
@@ -137,7 +133,7 @@ for r in rows:
     seen_keys.add(yaml_key)
 
     # The -m param must use the original filename from the CSV.
-    cmd = build_cmd(model_id_raw, repo_with_quant, ctx, model_type)
+    cmd = build_cmd(model_id_raw, repo_with_quant, ctx, modifiers)
 
     preserved_entry = {}
     existing_entry = existing_models.get(yaml_key)
@@ -145,7 +141,7 @@ for r in rows:
         preserved_entry = dict(existing_entry)
 
     preserved_entry["cmd"] = cmd
-    preserved_entry["env"] = [cuda_env(model_type)]
+    preserved_entry["env"] = [cuda_env(modifiers)]
     new_models[yaml_key] = preserved_entry
     added_repos.append(repo_with_quant)
 
@@ -179,5 +175,5 @@ if duplicate_warning:
     for k in duplicate_warning:
         print(f"  - {k}")
 print("Templates used:")
-print(f"  local: {CMD_TEMPLATE}")
-print(f"  remote: {CMD_TEMPLATE_REMOTE}")
+print(f"  local: {CMD_LOCAL}")
+print(f"  remote: {CMD_REMOTE}")

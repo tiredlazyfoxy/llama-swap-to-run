@@ -8,6 +8,7 @@ services:
     pull_policy: "always" 
     volumes:
       - ./models:/models
+      - ./slow_models:/slow_models
       - ./config.yaml:/app/config.yaml
     environment:
       - LLAMA_MODEL_PATH=/models
