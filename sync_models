@@ -1,0 +1,76 @@
+#!/bin/bash
+# Syncs model files between slow_models/ (HDD, primary) and models/ (SSD, fast cache)
+# based on the "slow" modifier in models.csv type column.
+#
+# All models live in slow_models/. Fast (non-slow) models also get a copy in models/.
+# Slow models are removed from models/ to free SSD space.
+#
+# Multi-part models (e.g. -00001-of-00002.gguf) are detected and all parts are synced.
+
+set -euo pipefail
+
+mkdir -p models slow_models
+
+# Given a model id, collect all file parts (single file or multi-part).
+# For "model-Q4_K_M-00001-of-00003.gguf" returns all 3 parts.
+# For "model.Q5_K_M.gguf" returns just that file.
+collect_parts() {
+    local id="$1"
+    local dir="$2"
+    # Check for multi-part pattern: -NNNNN-of-NNNNN.gguf
+    if [[ "$id" =~ ^(.+)-[0-9]+-of-([0-9]+)\.gguf$ ]]; then
+        local base="${BASH_REMATCH[1]}"
+        local total="${BASH_REMATCH[2]}"
+        local n=$((10#$total))
+        for ((i=1; i<=n; i++)); do
+            printf '%s-%05d-of-%05d.gguf\n' "$base" "$i" "$n"
+        done
+    else
+        echo "$id"
+    fi
+}
+
+tail -n +2 models.csv | while IFS=',' read -r id repo hf_ctx applied_ctx type; do
+    # Skip non-local models (no .gguf extension)
+    case "$id" in
+        *.gguf) ;;
+        *) continue ;;
+    esac
+
+    # Determine if model is slow
+    is_slow=false
+    case "$type" in
+        *slow*) is_slow=true ;;
+    esac
+
+    # Collect all file parts for this model
+    mapfile -t parts < <(collect_parts "$id" "")
+
+    for file in "${parts[@]}"; do
+        in_fast=false
+        in_slow=false
+        [ -f "models/$file" ] && in_fast=true
+        [ -f "slow_models/$file" ] && in_slow=true
+
+        # Step 1: ensure file exists in slow_models/ (primary storage)
+        if [ "$in_slow" = false ] && [ "$in_fast" = true ]; then
+            echo "COPY to primary: models/$file → slow_models/$file"
+            cp "models/$file" "slow_models/$file"
+            in_slow=true
+        elif [ "$in_slow" = false ] && [ "$in_fast" = false ]; then
+            echo "WARN: $file not found in either folder, skipping"
+            continue
+        fi
+
+        # Step 2: manage fast SSD copy
+        if [ "$is_slow" = true ] && [ "$in_fast" = true ]; then
+            echo "REMOVE from SSD: models/$file (marked slow)"
+            rm "models/$file"
+        elif [ "$is_slow" = false ] && [ "$in_fast" = false ]; then
+            echo "COPY to SSD: slow_models/$file → models/$file"
+            cp "slow_models/$file" "models/$file"
+        else
+            echo "OK: $file"
+        fi
+    done
+done
