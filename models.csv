@@ -7,8 +7,8 @@ Qwen3-Darkest-Jan-v1-256k-ctx-6B.i1-Q6_K.gguf,mradermacher/Qwen3-Darkest-Jan-v1-
 Qwen3-ST-The-Next-Generation-II-v1-256k-ctx-6B.Q6_K.gguf,mradermacher/Qwen3-ST-The-Next-Generation-II-v1-256k-ctx-6B-GGUF:Q6_K,262144,32768,small+slow
 Fallen-Gemma3-27B-v1.i1-Q5_K_M.gguf,mradermacher/Fallen-Gemma3-27B-v1-i1-GGUF:Q5_K_M,131072,65536,slow
 MN-DARKEST-UNIVERSE-29B_Q4_K_M,DavidAU/MN-DARKEST-UNIVERSE-29B-GGUF:Q4_K_M,131072,65536,slow
-gemma-3-4b-it-UD-Q6_K_XL.gguf,unsloth/gemma-3-4b-it-GGUF:Q6_K_XL,131072,131072,small
-gemma-3-12b-it-qat-UD-Q6_K_XL.gguf,unsloth/gemma-3-12b-it-qat-GGUF:Q6_K_XL,131072,131072
+gemma-3-4b-it-UD-Q6_K_XL.gguf,unsloth/gemma-3-4b-it-GGUF:Q6_K_XL,131072,32768,small
+gemma-3-12b-it-qat-UD-Q6_K_XL.gguf,unsloth/gemma-3-12b-it-qat-GGUF:Q6_K_XL,131072,32768,small
 gemma-3-27b-it-qat-Q5_K_M.gguf,unsloth/gemma-3-27b-it-qat-GGUF:Q5_K_M,131072,65536,slow
 Qwen3-30B-A3B-Instruct-2507.Q5_K_M.gguf,mradermacher/Qwen3-30B-A3B-Instruct-2507-GGUF:Q5_K_M,262144,65536
 Qwen3-42B-A3B-Stranger-Thoughts-Deep20x-Abliterated-Uncensored.Q5_K_M.gguf,mradermacher/Qwen3-42B-A3B-Stranger-Thoughts-Deep20x-Abliterated-Uncensored-GGUF:Q5_K_M,262144,65536
