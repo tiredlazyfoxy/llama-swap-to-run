@@ -9,14 +9,14 @@ models:
   Qwen3-30B-A3B-Thinking-2507.Q5_K_M:
     cmd: |-
       ${llama-server}
-        -m /models/Qwen3-30B-A3B-Thinking-2507.Q5_K_M.gguf
+        -m /slow_models/Qwen3-30B-A3B-Thinking-2507.Q5_K_M.gguf
         --ctx-size 131072  --jinja
     env:
     - CUDA_VISIBLE_DEVICES=0,1
   Qwen3-30B-A3B-Thinking-2507-Amoral-Edition.i1-Q5_K_M:
     cmd: |-
       ${llama-server}
-        -m /models/Qwen3-30B-A3B-Thinking-2507-Amoral-Edition.i1-Q5_K_M.gguf
+        -m /slow_models/Qwen3-30B-A3B-Thinking-2507-Amoral-Edition.i1-Q5_K_M.gguf
         --ctx-size 131072  --jinja
     env:
     - CUDA_VISIBLE_DEVICES=0,1
@@ -86,7 +86,7 @@ models:
   Qwen3-30B-A3B-Instruct-2507.Q5_K_M:
     cmd: |-
       ${llama-server}
-        -m /models/Qwen3-30B-A3B-Instruct-2507.Q5_K_M.gguf
+        -m /slow_models/Qwen3-30B-A3B-Instruct-2507.Q5_K_M.gguf
         --ctx-size 65536  --jinja
     env:
     - CUDA_VISIBLE_DEVICES=0,1
@@ -170,14 +170,14 @@ models:
   gpt-oss-20b-uncensored-heretic.i1-MXFP4_MOE:
     cmd: |-
       ${llama-server}
-        -m /models/gpt-oss-20b-uncensored-heretic.i1-MXFP4_MOE.gguf
+        -m /slow_models/gpt-oss-20b-uncensored-heretic.i1-MXFP4_MOE.gguf
         --ctx-size 65535  --jinja
     env:
     - CUDA_VISIBLE_DEVICES=0,1
   gpt-oss-120b-heretic-v1.i1-MXFP4_MOE:
     cmd: |-
       ${llama-server}
-        -m /models/gpt-oss-120b-heretic-v1.i1-MXFP4_MOE.gguf
+        -m /slow_models/gpt-oss-120b-heretic-v1.i1-MXFP4_MOE.gguf
         --ctx-size 65535  --jinja
     env:
     - CUDA_VISIBLE_DEVICES=0,1
@@ -240,7 +240,7 @@ models:
   gemma-4-26B-A4B-it-UD-Q5_K_XL:
     cmd: |-
       ${llama-server}
-        -m /slow_models/gemma-4-26B-A4B-it-UD-Q5_K_XL.gguf
+        -m /models/gemma-4-26B-A4B-it-UD-Q5_K_XL.gguf
         --ctx-size 131072  --jinja
     env:
     - CUDA_VISIBLE_DEVICES=0,1
