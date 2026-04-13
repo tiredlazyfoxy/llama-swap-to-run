@@ -216,6 +216,41 @@ models:
         --ctx-size 65536  --jinja
     env:
     - CUDA_VISIBLE_DEVICES=0,1
+  gemma-4-31B-it-Grand-Horror-X-INTENSE-HERETIC-UNCENSORED-Thinking.i1-Q5_K_M:
+    cmd: |-
+      ${llama-server}
+        -m /models/gemma-4-31B-it-Grand-Horror-X-INTENSE-HERETIC-UNCENSORED-Thinking.i1-Q5_K_M.gguf
+        --ctx-size 131072  --jinja
+    env:
+    - CUDA_VISIBLE_DEVICES=0,1
+  gemma-4-31b-it-heretic-ara.i1-Q5_K_M:
+    cmd: |-
+      ${llama-server}
+        -m /models/gemma-4-31b-it-heretic-ara.i1-Q5_K_M.gguf
+        --ctx-size 131072  --jinja
+    env:
+    - CUDA_VISIBLE_DEVICES=0,1
+  gemma-4-31B-it-UD-Q5_K_XL:
+    cmd: |-
+      ${llama-server}
+        -m /slow_models/gemma-4-31B-it-UD-Q5_K_XL.gguf
+        --ctx-size 131072  --jinja
+    env:
+    - CUDA_VISIBLE_DEVICES=0,1
+  gemma-4-26B-A4B-it-UD-Q5_K_XL:
+    cmd: |-
+      ${llama-server}
+        -m /slow_models/gemma-4-26B-A4B-it-UD-Q5_K_XL.gguf
+        --ctx-size 131072  --jinja
+    env:
+    - CUDA_VISIBLE_DEVICES=0,1
+  gemma-4-26B-A4B-it-heretic-ara.i1-Q5_K_M:
+    cmd: |-
+      ${llama-server}
+        -m /models/gemma-4-26B-A4B-it-heretic-ara.i1-Q5_K_M.gguf
+        --ctx-size 131072  --jinja
+    env:
+    - CUDA_VISIBLE_DEVICES=0,1
 groups:
   embedders:
     swap: false
