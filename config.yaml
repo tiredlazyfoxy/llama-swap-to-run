@@ -232,6 +232,14 @@ groups:
     - Qwen3-4B-Thinking-2507.Q6_K
     - Qwen3.5-9B-heretic.i1-Q5_K_M
     - Qwen3.5-27B-heretic-Q5_K_M
+  gemmas-4:
+    swap: false
+    exclusive: false
+    members:
+    - gemma-4-31b-it-heretic-ara.i1-Q5_K_M
+    - gemma-4-31B-it-Grand-Horror-X-INTENSE-HERETIC-UNCENSORED-Thinking.i1-Q5_K_M
+    - gemma-4-26B-A4B-it-heretic-ara.i1-Q5_K_M
+    - gemma-4-26B-A4B-it-UD-Q5_K_XL
   llamas:
     swap: false
     exclusive: false
@@ -252,7 +260,7 @@ groups:
     - OpenAi-GPT-oss-36B-BrainStorm20x-uncensored.i1-Q5_K_M
     - gpt-oss-120b_MXFP4_MOE
     - gpt-oss-20b_MXFP4_MOE
-  gemmas:
+  gemmas-3:
     swap: false
     exclusive: false
     members:
