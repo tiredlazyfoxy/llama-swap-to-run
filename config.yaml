@@ -274,6 +274,7 @@ groups:
     - Qwen3-4B-Thinking-2507.Q6_K
     - Qwen3.5-9B-heretic.i1-Q5_K_M
     - Qwen3.5-27B-heretic-Q5_K_M
+    - Qwen3.6-35B-A3B-Uncensored-HauhauCS-Aggressive-Q5_K_P
   gemmas-4:
     swap: false
     exclusive: false
