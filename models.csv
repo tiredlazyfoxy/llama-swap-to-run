@@ -17,7 +17,7 @@ gpt-oss-120b_MXFP4_MOE,lmstudio-community/gpt-oss-120b-GGUF,131072,65535,slow
 meta-llama_Llama-4-Scout-17B-16E-Instruct-Q4_K_M-00001-of-00002.gguf,bartowski/meta-llama_Llama-4-Scout-17B-16E-Instruct-old-GGUF:Q4_K_M,10485760,131072,slow
 bge-large-en-v1.5.i1-Q6_K.gguf,mradermacher/bge-large-en-v1.5-i1-GGUF:Q6_K,4096,4096,embedder
 Qwen3.5-27B-Q5_K_M.gguf,unsloth/Qwen3.5-27B-GGUF:Q5_K_M,262144,65536
-Qwen3.5-35B-A3B-Q5_K_M.gguf,unsloth/Qwen3.5-35B-A3B-GGUF:Q5_K_M,262144,65536
+Qwen3.5-35B-A3B-Q5_K_M.gguf,unsloth/Qwen3.5-35B-A3B-GGUF:Q5_K_M,262144,65536,slow
 Qwen3.5-27B-heretic-Q5_K_M.gguf,juanml82/Qwen3.5-27B-heretic-GGUF:Q5_K_M,262144,65536
 qwen3-next-80b-a3b-thinking-mxfp4_moe.gguf,juanml82/Huihui-Qwen3-Next-80B-A3B-Thinking-abliterated-gguf:MXFP4_MOE,262144,65536,slow
 Big-Tiger-Gemma-27B-v3-heretic.i1-Q5_K_M.gguf,mradermacher/Big-Tiger-Gemma-27B-v3-heretic-i1-GGUF:Q5_K_M,131072,65536
@@ -26,7 +26,7 @@ gpt-oss-20b-uncensored-heretic.i1-MXFP4_MOE.gguf,mradermacher/gpt-oss-20b-uncens
 gpt-oss-120b-heretic-v1.i1-MXFP4_MOE.gguf,mradermacher/gpt-oss-120b-heretic-v1-i1-GGUF:MXFP4_MOE,131072,65535,slow
 Qwen3-VL-8B-Thinking-heretic-imatrix-Q5_K_M.gguf,ZuzeTt/Qwen3-VL-8B-Thinking-Imatrix-heretic:Q5_K_M,262144,65536,small
 Qwen3-VL-8B-GLM-4.7-Flash-Heretic-Uncensored-Thinking.i1-Q5_K_M.gguf,mradermacher/Qwen3-VL-8B-GLM-4.7-Flash-Heretic-Uncensored-Thinking-i1-GGUF:Q5_K_M,262144,65536,small
-Qwen3.5-35B-A3B-heretic.Q5_K_M.gguf,mradermacher/Qwen3.5-35B-A3B-heretic-GGUF:Q5_K_M,262144,65536
+Qwen3.5-35B-A3B-heretic.Q5_K_M.gguf,mradermacher/Qwen3.5-35B-A3B-heretic-GGUF:Q5_K_M,262144,65536,slow
 Qwen3.5-9B-heretic.i1-Q5_K_M.gguf,mradermacher/Qwen3.5-9B-heretic-i1-GGUF:Q5_K_M,262144,65536,small
 Qwen3.5-122B-A10B-heretic.i1-Q4_K_M.gguf,mradermacher/Qwen3.5-122B-A10B-heretic-i1-GGUF:Q4_K_M,262144,65536
 gemma-4-31B-it-Grand-Horror-X-INTENSE-HERETIC-UNCENSORED-Thinking.i1-Q5_K_M.gguf,mradermacher/gemma-4-31B-it-Grand-Horror-X-INTENSE-HERETIC-UNCENSORED-Thinking-i1-GGUF:Q5_K_M,262144,131072
@@ -35,3 +35,4 @@ gemma-4-31B-it-UD-Q5_K_XL.gguf,unsloth/gemma-4-31B-it-GGUF:Q5_K_XL,262144,131072
 gemma-4-26B-A4B-it-UD-Q5_K_XL.gguf,unsloth/gemma-4-26B-A4B-it-GGUF:UD-Q5_K_XL,262144,131072
 gemma-4-26B-A4B-it-heretic-ara.i1-Q5_K_M.gguf,mradermacher/gemma-4-26B-A4B-it-heretic-ara-i1-GGUF:Q5_K_M,262144,131072
 Qwen3.6-35B-A3B-Uncensored-HauhauCS-Aggressive-Q5_K_P.gguf,HauhauCS/Qwen3.6-35B-A3B-Uncensored-HauhauCS-Aggressive:Q5_K_P,262144,65536
+Qwen3.6-27B-NEO-CODE-HERE-2T-OT-Q5_K_M.gguf,DavidAU/Qwen3.6-27B-Heretic-Uncensored-FINETUNE-NEO-CODE-Di-IMatrix-MAX-GGUF:Q5_K_M,262144,65536

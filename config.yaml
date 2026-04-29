@@ -135,7 +135,7 @@ models:
   Qwen3.5-35B-A3B-Q5_K_M:
     cmd: |-
       ${llama-server}
-        -m /models/Qwen3.5-35B-A3B-Q5_K_M.gguf
+        -m /slow_models/Qwen3.5-35B-A3B-Q5_K_M.gguf
         --ctx-size 65536  --jinja
     env:
     - CUDA_VISIBLE_DEVICES=0,1
@@ -198,7 +198,7 @@ models:
   Qwen3.5-35B-A3B-heretic.Q5_K_M:
     cmd: |-
       ${llama-server}
-        -m /models/Qwen3.5-35B-A3B-heretic.Q5_K_M.gguf
+        -m /slow_models/Qwen3.5-35B-A3B-heretic.Q5_K_M.gguf
         --ctx-size 65536  --jinja
     env:
     - CUDA_VISIBLE_DEVICES=0,1
@@ -258,13 +258,20 @@ models:
         --ctx-size 65536  --jinja
     env:
     - CUDA_VISIBLE_DEVICES=0,1
+  Qwen3.6-27B-NEO-CODE-HERE-2T-OT-Q5_K_M:
+    cmd: |-
+      ${llama-server}
+        -m /models/Qwen3.6-27B-NEO-CODE-HERE-2T-OT-Q5_K_M.gguf
+        --ctx-size 65536  --jinja
+    env:
+    - CUDA_VISIBLE_DEVICES=0,1
 groups:
   embedders:
     swap: false
     exclusive: false
     members:
     - bge-large-en-v1.5.i1-Q6_K
-  qwens:
+  qwens35:
     swap: false
     exclusive: false
     members:
@@ -274,7 +281,12 @@ groups:
     - Qwen3-4B-Thinking-2507.Q6_K
     - Qwen3.5-9B-heretic.i1-Q5_K_M
     - Qwen3.5-27B-heretic-Q5_K_M
+  qwens36:
+    swap: false
+    exclusive: false
+    members:
     - Qwen3.6-35B-A3B-Uncensored-HauhauCS-Aggressive-Q5_K_P
+    - Qwen3.6-27B-NEO-CODE-HERE-2T-OT-Q5_K_M
   gemmas-4:
     swap: false
     exclusive: false
