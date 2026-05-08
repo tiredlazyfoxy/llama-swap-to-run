@@ -262,7 +262,7 @@ models:
     cmd: |-
       ${llama-server}
         -m /models/Qwen3.6-27B-NEO-CODE-HERE-2T-OT-Q5_K_M.gguf
-        --ctx-size 65536  --jinja
+        --ctx-size 262144  --jinja
     env:
     - CUDA_VISIBLE_DEVICES=0,1
 groups:
