@@ -108,6 +108,69 @@ def cuda_env(modifiers: set) -> str:
         return "CUDA_VISIBLE_DEVICES=2"
     return "CUDA_VISIBLE_DEVICES=0,1"
 
+# Validate + render the `groups:` section against the rebuilt model set.
+# PyYAML can't emit comments (and safe_load strips them on read), so we render
+# this block by hand as text. Dead/duplicate members are preserved as comments
+# instead of being silently deleted, and fully-dead groups are commented out
+# wholesale, so llama-swap never sees a member that isn't in `models:`.
+
+def _scalar(value) -> str:
+    # Render a YAML scalar the way the dumper would (lowercase true/false, etc.).
+    # Take only the first line to drop the trailing '...' document-end marker that
+    # safe_dump appends for bare scalars.
+    return yaml.safe_dump(value, default_flow_style=True).splitlines()[0]
+
+def render_groups(groups: dict, valid_keys: set):
+    diagnostics = {"missing": [], "empty": [], "duplicate": []}
+    seen = {}  # model_key -> first group that owns it
+    lines = ["groups:"]
+
+    for gname, gbody in groups.items():
+        gbody = gbody if isinstance(gbody, dict) else {}
+        raw_members = gbody.get("members")
+        raw_members = raw_members if isinstance(raw_members, list) else []
+
+        # Classify members, preserving original order.
+        classified = []  # (member, kind, note)  kind in {active, missing, duplicate}
+        has_active = False
+        for m in raw_members:
+            if m not in valid_keys:
+                classified.append((m, "missing", "MISSING from models: (kept as comment)"))
+                diagnostics["missing"].append((gname, m))
+            elif m in seen:
+                owner = seen[m]
+                classified.append((m, "duplicate", f"DUPLICATE -- already in group '{owner}'"))
+                diagnostics["duplicate"].append((gname, m, owner))
+            else:
+                seen[m] = gname
+                classified.append((m, "active", None))
+                has_active = True
+
+        # Build this group's block lines (uncommented form).
+        block = [f"  {gname}:"]
+        for k, v in gbody.items():
+            if k == "members":
+                continue
+            block.append(f"    {k}: {_scalar(v)}")
+        block.append("    members:")
+        for m, kind, note in classified:
+            if kind == "active":
+                block.append(f"    - {m}")
+            else:
+                block.append(f"    # - {m}   # {note}")
+        if not classified:
+            block.append("    # (no members)")
+
+        # A group with no surviving active members is commented out wholesale.
+        if not has_active:
+            diagnostics["empty"].append(gname)
+            block = [(f"# {ln}" if ln.strip() else "#") for ln in block]
+            block.insert(0, f"  # GROUP '{gname}' EMPTY -- all members missing (kept as comment)")
+
+        lines.extend(block)
+
+    return "\n".join(lines) + "\n", diagnostics
+
 # Rebuild models mapping in CSV order
 new_models = {}
 added_repos: List[str] = []
@@ -147,6 +210,13 @@ for r in rows:
 
 # Write back config with the same top-level keys, replacing only 'models'
 cfg["models"] = new_models
+# Pull groups out so yaml.dump never emits it; we render it by hand (with comments)
+# after validating its members against the rebuilt model set.
+groups = cfg.pop("groups", None)
+valid_keys = set(new_models.keys())
+groups_text, group_diag = "", {"missing": [], "empty": [], "duplicate": []}
+if isinstance(groups, dict) and groups:
+    groups_text, group_diag = render_groups(groups, valid_keys)
 # Custom YAML Dumper to ensure block style for 'cmd' keys
 class BlockStyleDumper(yaml.SafeDumper):
     pass
@@ -167,8 +237,28 @@ BlockStyleDumper.add_representer(str, block_scalar_presenter)
 
 with CONFIG_PATH.open("w", encoding="utf-8") as f:
     yaml.dump(cfg, f, Dumper=BlockStyleDumper, sort_keys=False, allow_unicode=True)
+    if groups_text:
+        f.write(groups_text)
 
 print(f"Rebuilt models section with {len(new_models)} entries from {CSV_PATH.name} using template.")
+
+# Report groups validation results.
+if isinstance(groups, dict) and groups:
+    if not (group_diag["missing"] or group_diag["empty"] or group_diag["duplicate"]):
+        print("groups: all members valid.")
+    else:
+        if group_diag["missing"]:
+            print("groups: missing members (commented out, not in models:):")
+            for gname, m in group_diag["missing"]:
+                print(f"  - {gname}: {m}")
+        if group_diag["duplicate"]:
+            print("groups: duplicate members (commented out, kept in first group):")
+            for gname, m, owner in group_diag["duplicate"]:
+                print(f"  - {gname}: {m} (owned by '{owner}')")
+        if group_diag["empty"]:
+            print("groups: emptied groups (whole block commented out):")
+            for gname in group_diag["empty"]:
+                print(f"  - {gname}")
 duplicate_warning = [k for k in new_models.keys() if "__" in k]
 if duplicate_warning:
     print("Duplicate ids were detected; numeric suffixes applied:")

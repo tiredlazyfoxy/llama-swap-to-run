@@ -278,7 +278,6 @@ groups:
     - Qwen3-30B-A3B-Thinking-2507-Amoral-Edition.i1-Q5_K_M
     - Qwen3.5-35B-A3B-heretic.Q5_K_M
     - Qwen3-Silent-Scream-6B.i1-Q6_K
-    - Qwen3-4B-Thinking-2507.Q6_K
     - Qwen3.5-9B-heretic.i1-Q5_K_M
     - Qwen3.5-27B-heretic-Q5_K_M
   qwens36:
@@ -311,7 +310,6 @@ groups:
     exclusive: false
     members:
     - Fallen-Gemma3-27B-v1.i1-Q5_K_M
-    - amoral-gemma3-27B-v2-qat.Q5_K_M
     - gemma-3-27b-it-qat-Q5_K_M
     - gemma-3-12b-it-qat-UD-Q6_K_XL
     - gemma-3-4b-it-UD-Q6_K_XL
@@ -319,6 +317,5 @@ groups:
     swap: true
     exclusive: false
     members:
-    - Hermes-4-70B-Q4_K_M
     - meta-llama_Llama-4-Scout-17B-16E-Instruct-Q4_K_M
     - Qwen3.5-122B-A10B-heretic.i1-Q4_K_M
