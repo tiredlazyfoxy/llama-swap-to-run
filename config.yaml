@@ -146,6 +146,13 @@ models:
         --ctx-size 65536  --jinja
     env:
     - CUDA_VISIBLE_DEVICES=0,1
+  Qwen3.8-27B-heretic-ara.i1-Q5_K_M:
+    cmd: |-
+      ${llama-server}
+        -m /models/Qwen3.8-27B-heretic-ara.i1-Q5_K_M.gguf
+        --ctx-size 65536  --jinja
+    env:
+    - CUDA_VISIBLE_DEVICES=0,1
   qwen3-next-80b-a3b-thinking-mxfp4_moe:
     cmd: |-
       ${llama-server}
@@ -280,6 +287,7 @@ groups:
     - Qwen3-Silent-Scream-6B.i1-Q6_K
     - Qwen3.5-9B-heretic.i1-Q5_K_M
     - Qwen3.5-27B-heretic-Q5_K_M
+    - Qwen3.8-27B-heretic-ara.i1-Q5_K_M
   qwens36:
     swap: false
     exclusive: false
