@@ -20,7 +20,7 @@ Qwen3.5-27B-Q5_K_M.gguf,unsloth/Qwen3.5-27B-GGUF:Q5_K_M,262144,65536
 Qwen3.5-35B-A3B-Q5_K_M.gguf,unsloth/Qwen3.5-35B-A3B-GGUF:Q5_K_M,262144,65536,slow
 Qwen3.5-27B-heretic-Q5_K_M.gguf,juanml82/Qwen3.5-27B-heretic-GGUF:Q5_K_M,262144,65536
 Qwen3.8-27B-heretic-ara.i1-Q5_K_M.gguf,mradermacher/Qwen3.8-27B-heretic-ara-i1-GGUF:Q5_K_M,262144,65536
-Qwen3.8-27B-Uncensored-FP8-i1-Q5_K_M.gguf,mradermacher/Qwen3.8-27B-Uncensored-FP8-i1-GGUF:Q5_K_M,262144,65536
+Qwen3.8-27B-Uncensored-FP8.i1-Q5_K_M.gguf,mradermacher/Qwen3.8-27B-Uncensored-FP8-i1-GGUF:Q5_K_M,262144,65536
 qwen3-next-80b-a3b-thinking-mxfp4_moe.gguf,juanml82/Huihui-Qwen3-Next-80B-A3B-Thinking-abliterated-gguf:MXFP4_MOE,262144,65536,slow
 Big-Tiger-Gemma-27B-v3-heretic.i1-Q5_K_M.gguf,mradermacher/Big-Tiger-Gemma-27B-v3-heretic-i1-GGUF:Q5_K_M,131072,65536
 Llama-3.3-8B-Instruct-128K-heretic.Q5_K_M.gguf,mradermacher/Llama-3.3-8B-Instruct-128K-heretic-GGUF:Q5_K_M,131072,65536,small+slow
