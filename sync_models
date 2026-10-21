@@ -5,11 +5,14 @@
 # All models live in slow_models/. Fast (non-slow) models also get a copy in models/.
 # Slow models are removed from models/ to free SSD space.
 #
+# Every .gguf file found in models/ or slow_models/ is also kept in backup-models/.
+# Files not listed in models.csv are backed up first, then deleted from models/ and slow_models/.
+#
 # Multi-part models (e.g. -00001-of-00002.gguf) are detected and all parts are synced.
 
 set -euo pipefail
 
-mkdir -p models slow_models
+mkdir -p models slow_models backup-models
 
 # Given a model id, collect all file parts (single file or multi-part).
 # For "model-Q4_K_M-00001-of-00003.gguf" returns all 3 parts.
@@ -30,7 +33,48 @@ collect_parts() {
     fi
 }
 
-tail -n +2 models.csv | while IFS=',' read -r id repo hf_ctx applied_ctx type; do
+# Ensure backup-models/ holds a complete copy of the given file.
+# Copies via a temp file so an interrupted copy never looks like a valid backup.
+ensure_backup() {
+    local src="$1"
+    local name
+    name="$(basename "$src")"
+    local dst="backup-models/$name"
+    if [ -f "$dst" ] && [ "$(stat -c %s "$dst")" = "$(stat -c %s "$src")" ]; then
+        return 0
+    fi
+    echo "BACKUP: $src → $dst"
+    cp "$src" "$dst.part"
+    mv "$dst.part" "$dst"
+}
+
+# Collect every file part listed in models.csv
+declare -A listed=()
+while IFS=',' read -r id _ || [ -n "$id" ]; do
+    id="${id%$'\r'}"
+    case "$id" in
+        *.gguf) ;;
+        *) continue ;;
+    esac
+    while IFS= read -r part; do
+        listed["$part"]=1
+    done < <(collect_parts "$id" "")
+done < <(tail -n +2 models.csv)
+
+# Back up every model file; remove ones no longer listed in models.csv
+for dir in models slow_models; do
+    for path in "$dir"/*.gguf; do
+        [ -f "$path" ] || continue
+        ensure_backup "$path"
+        name="$(basename "$path")"
+        if [ -z "${listed[$name]:-}" ]; then
+            echo "DELETE unlisted: $path (backed up)"
+            rm "$path"
+        fi
+    done
+done
+
+tail -n +2 models.csv | while IFS=',' read -r id repo hf_ctx applied_ctx type || [ -n "$id" ]; do
     # Skip non-local models (no .gguf extension)
     case "$id" in
         *.gguf) ;;

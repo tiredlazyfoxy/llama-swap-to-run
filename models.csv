@@ -5,3 +5,4 @@ gemma-4-26B-A4B-it-heretic-ara.i1-Q5_K_M.gguf,mradermacher/gemma-4-26B-A4B-it-he
 Qwen3.5-122B-A10B-heretic.i1-Q4_K_M.gguf,mradermacher/Qwen3.5-122B-A10B-heretic-i1-GGUF:Q4_K_M,262144,65536
 Qwen3.6-35B-A3B-Uncensored-HauhauCS-Aggressive-Q5_K_P.gguf,HauhauCS/Qwen3.6-35B-A3B-Uncensored-HauhauCS-Aggressive:Q5_K_P,262144,65536
 Qwen3.8-27B-Uncensored-FP8.i1-Q5_K_M.gguf,mradermacher/Qwen3.8-27B-Uncensored-FP8-i1-GGUF:Q5_K_M,262144,65536
+Qwen3.8-Flash-Next-Uncensored-Q4_K_M-00001-of-00003.gguf,forcarouter/Qwen3.8-Flash-Next-Uncensored-GGUF:Q4_K_M,262144,65536

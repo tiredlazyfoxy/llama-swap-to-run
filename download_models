@@ -1,7 +1,80 @@
 #!/bin/bash
+# Downloads models listed in models.csv from HuggingFace.
+# If a model's files are present in backup-models/, they are copied from there instead.
+#
+# Multi-part models are supported in two forms:
+#   - gguf-split files (id like "model-Q4_K_M-00001-of-00003.gguf"): every missing part is
+#     downloaded and kept as a separate file; llama.cpp loads them from the first part.
+#   - raw byte splits (e.g. mradermacher "model.i1-Q4_K_M.gguf.part1of2"): pieces are
+#     downloaded and concatenated into the single .gguf named by id.
 mkdir -p models slow_models
 
-tail -n +2 models.csv | while IFS=',' read -r id repo hf_ctx applied_ctx type; do
+# Given a model id, collect all file parts (single file or multi-part).
+# For "model-Q4_K_M-00001-of-00003.gguf" returns all 3 parts.
+# For "model.Q5_K_M.gguf" returns just that file.
+collect_parts() {
+    local id="$1"
+    if [[ "$id" =~ ^(.+)-[0-9]+-of-([0-9]+)\.gguf$ ]]; then
+        local base="${BASH_REMATCH[1]}"
+        local total="${BASH_REMATCH[2]}"
+        local n=$((10#$total))
+        for ((i=1; i<=n; i++)); do
+            printf '%s-%05d-of-%05d.gguf\n' "$base" "$i" "$n"
+        done
+    else
+        echo "$id"
+    fi
+}
+
+# After a download, bring <file> to the top of <dir>: move it up from a repo subfolder,
+# or join its ".partNofM" pieces. Returns 1 if the file could not be assembled.
+finalize_file() {
+    local dir="$1"
+    local file="$2"
+    [ -f "$dir/$file" ] && return 0
+
+    # Repos sometimes keep files in subfolders (e.g. Q4_K_M/model-...gguf)
+    local nested
+    nested="$(find "$dir" -mindepth 2 -path "$dir/.cache" -prune -o -type f -name "$file" -print -quit)"
+    if [ -n "$nested" ]; then
+        echo "MOVE: $nested → $dir/$file"
+        mv "$nested" "$dir/$file"
+        rmdir -p "$(dirname "$nested")" 2>/dev/null || true
+        return 0
+    fi
+
+    # Raw byte split: <file>.part1ofM ... <file>.partMofM
+    local first
+    first="$(find "$dir" -path "$dir/.cache" -prune -o -type f -name "$file.part1of*" -print -quit)"
+    if [ -n "$first" ]; then
+        local piece_dir total i
+        piece_dir="$(dirname "$first")"
+        total="${first##*of}"
+        for ((i=1; i<=total; i++)); do
+            if [ ! -f "$piece_dir/$file.part${i}of${total}" ]; then
+                echo "ERROR: missing piece $file.part${i}of${total}"
+                return 1
+            fi
+        done
+        echo "JOIN: $total pieces → $dir/$file"
+        for ((i=1; i<=total; i++)); do
+            cat "$piece_dir/$file.part${i}of${total}"
+        done > "$dir/$file.joining"
+        mv "$dir/$file.joining" "$dir/$file"
+        for ((i=1; i<=total; i++)); do
+            rm "$piece_dir/$file.part${i}of${total}"
+        done
+        [ "$piece_dir" != "$dir" ] && { rmdir -p "$piece_dir" 2>/dev/null || true; }
+        return 0
+    fi
+
+    echo "ERROR: $file not found in $repo_id after download"
+    return 1
+}
+
+tail -n +2 models.csv | while IFS=',' read -r id repo hf_ctx applied_ctx type || [ -n "$id" ]; do
+    id="${id%$'\r'}"
+    type="${type%$'\r'}"
     repo_id="${repo%%:*}"
     quant="${repo##*:}"
 
@@ -20,8 +93,42 @@ tail -n +2 models.csv | while IFS=',' read -r id repo hf_ctx applied_ctx type; d
 
     echo "Processing $repo_id ($quant) → $target_dir/"
 
+    # For local .gguf ids, check each file part: already present, restorable from backup, or missing
+    if [[ "$id" == *.gguf ]]; then
+        missing=()
+        while IFS= read -r part; do
+            if [ -f "models/$part" ] || [ -f "slow_models/$part" ]; then
+                echo "SKIP: File already exists → $part"
+            elif [ -f "backup-models/$part" ]; then
+                echo "RESTORE from backup: backup-models/$part → $target_dir/$part"
+                cp "backup-models/$part" "$target_dir/$part.copying"
+                mv "$target_dir/$part.copying" "$target_dir/$part"
+            else
+                echo "File not found: $part"
+                missing+=("$part")
+            fi
+        done < <(collect_parts "$id")
+        if [ "${#missing[@]}" -eq 0 ]; then
+            continue
+        fi
+
+        # Download only the missing parts, at the repo root or in a subfolder,
+        # whole or as raw ".partNofM" pieces
+        includes=()
+        for part in "${missing[@]}"; do
+            includes+=(--include "$part" --include "*/$part")
+            includes+=(--include "$part.part*" --include "*/$part.part*")
+        done
+
+        echo "Downloading ${#missing[@]} file(s) from $repo_id → $target_dir/"
+        hf download "$repo_id" "${includes[@]}" --local-dir "$target_dir" < /dev/null
+
+        for part in "${missing[@]}"; do
+            finalize_file "$target_dir" "$part" || true
+        done
+        continue
     # Check if the target file already exists in either location
-    if [ -f "models/$expected_filename" ] || [ -f "slow_models/$expected_filename" ]; then
+    elif [ -f "models/$expected_filename" ] || [ -f "slow_models/$expected_filename" ]; then
         echo "SKIP: File already exists → $expected_filename"
         continue
     else
@@ -34,6 +141,6 @@ tail -n +2 models.csv | while IFS=',' read -r id repo hf_ctx applied_ctx type; d
 
     hf download "$repo_id" \
         --include "$pattern" \
-        --local-dir "$target_dir"
+        --local-dir "$target_dir" < /dev/null
 
 done
