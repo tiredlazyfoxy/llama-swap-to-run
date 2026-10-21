@@ -48,61 +48,37 @@ models:
         --ctx-size 65536  --jinja
     env:
     - CUDA_VISIBLE_DEVICES=0,1
+  Qwen3.8-Flash-Next-Uncensored-Q4_K_M:
+    cmd: |-
+      ${llama-server}
+        -m /models/Qwen3.8-Flash-Next-Uncensored-Q4_K_M-00001-of-00003.gguf
+        --ctx-size 65536  --jinja
+    env:
+    - CUDA_VISIBLE_DEVICES=0,1
 groups:
   embedders:
     swap: false
     exclusive: false
     members:
     - bge-large-en-v1.5.i1-Q6_K
-  # GROUP 'qwens35' EMPTY -- all members missing (kept as comment)
-#   qwens35:
-#     swap: false
-#     exclusive: false
-#     members:
-#     # - Qwen3-30B-A3B-Thinking-2507-Amoral-Edition.i1-Q5_K_M   # MISSING from models: (kept as comment)
-#     # - Qwen3.5-35B-A3B-heretic.Q5_K_M   # MISSING from models: (kept as comment)
-#     # - Qwen3-Silent-Scream-6B.i1-Q6_K   # MISSING from models: (kept as comment)
-#     # - Qwen3.5-9B-heretic.i1-Q5_K_M   # MISSING from models: (kept as comment)
-#     # - Qwen3.5-27B-heretic-Q5_K_M   # MISSING from models: (kept as comment)
   qwens36:
     swap: false
     exclusive: false
     members:
     - Qwen3.6-35B-A3B-Uncensored-HauhauCS-Aggressive-Q5_K_P
-    # - Qwen3.6-27B-NEO-CODE-HERE-2T-OT-Q5_K_M   # MISSING from models: (kept as comment)
-    # - Qwen3.8-27B-heretic-ara.i1-Q5_K_M   # MISSING from models: (kept as comment)
   gemmas-4:
     swap: false
     exclusive: false
     members:
-    # - gemma-4-31b-it-heretic-ara.i1-Q5_K_M   # MISSING from models: (kept as comment)
-    # - gemma-4-31B-it-Grand-Horror-X-INTENSE-HERETIC-UNCENSORED-Thinking.i1-Q5_K_M   # MISSING from models: (kept as comment)
     - gemma-4-26B-A4B-it-heretic-ara.i1-Q5_K_M
-    # - gemma-4-26B-A4B-it-UD-Q5_K_XL   # MISSING from models: (kept as comment)
   llamas:
     swap: false
     exclusive: false
     members:
     - L3.3-GeneticLemonade-Final-70B.i1-Q4_K_M
-  # GROUP 'openais' EMPTY -- all members missing (kept as comment)
-#   openais:
-#     swap: false
-#     exclusive: false
-#     members:
-#     # - gpt-oss-120b_MXFP4_MOE   # MISSING from models: (kept as comment)
-#     # - gpt-oss-20b_MXFP4_MOE   # MISSING from models: (kept as comment)
-  # GROUP 'gemmas-3' EMPTY -- all members missing (kept as comment)
-#   gemmas-3:
-#     swap: false
-#     exclusive: false
-#     members:
-#     # - Fallen-Gemma3-27B-v1.i1-Q5_K_M   # MISSING from models: (kept as comment)
-#     # - gemma-3-27b-it-qat-Q5_K_M   # MISSING from models: (kept as comment)
-#     # - gemma-3-12b-it-qat-UD-Q6_K_XL   # MISSING from models: (kept as comment)
-#     # - gemma-3-4b-it-UD-Q6_K_XL   # MISSING from models: (kept as comment)
   big:
     swap: true
     exclusive: false
     members:
-    # - meta-llama_Llama-4-Scout-17B-16E-Instruct-Q4_K_M   # MISSING from models: (kept as comment)
     - Qwen3.5-122B-A10B-heretic.i1-Q4_K_M
+    - Qwen3.8-Flash-Next-Uncensored-Q4_K_M
